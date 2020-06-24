@@ -1,0 +1,29 @@
+{% set url = path('get_ad', {'slug':ad.slug }) %}
+<div class="col-4 my-2">
+    <div class="card bg-light border border-dark">
+        <div class="card-header text-center rounded">
+            {{ ad.rooms }}
+            {% if ad.rooms > 1 %} Chambres {% else %} Chambre {% endif %} &agrave;
+            <strong>{{ad.price}} &euro; / nuit</strong>
+            <div class="my-2"><small>Pas encore not&eacute;</small></div>                
+        </div>
+            <div class="d-flex justify-content-center">
+                <a href="{{path('account_profil', {'slug':ad.author.slug})}}"><img src="{{ad.author.picture}}" class="rounded-circle img-thumbail thumbail" style="transform:translateY(30%)" alt="image de {{ad.author.fullName}}" title="{{ad.author.fullName}}"></a>
+            </div>
+
+        <a href="{{url}}">
+            <img src="{{ad.coverImage}}" class="img-fluid img-thumbail rounded" style="width:100%; display:block"
+                alt="image de l'appartement">
+        </a>
+        <div class="card-body">
+            <a href="{{url}}" class="text-decoration-none">
+                <h4 class="card-title">{{ad.title}}</h4>
+            </a>
+            <div class="card-subtitle text-muted my-2" >{{ad.introduction}}</div>
+            <div class="card-text">
+                {{ad.content | raw}}
+            </div>
+            <a href="{{url}}" class="btn btn-primary my-2">Voir l'offre</a>
+        </div>
+    </div>
+</div>

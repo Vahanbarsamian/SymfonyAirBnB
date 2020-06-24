@@ -1,0 +1,11 @@
+{
+    "deepscan.enable": true,
+    "editor.defaultFormatter": "wongjn.php-sniffer",
+    "[php]": {
+        "editor.defaultFormatter": "valeryanm.vscode-phpsab"
+    },
+    "gotoSymbolStack.currentStackPosition": 0,
+    "gotoSymbolStack.maxStackPosition": 0,
+    "gotoSymbolStack.filePositionInfo": [],
+    "php.suggest.basic": false
+}

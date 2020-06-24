@@ -1,0 +1,22 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}{{titre}}{% endblock %}
+{% form_theme form '/ad/_ad_theme_images.html.twig' %}
+{% block body %}
+<h1 class="text-center mb-5 pb-5 border-bottom border-grey mx-auto">{{titre}}</h1>
+{{ form_start(form, {'attr':{'class':'form-group'}}) }}
+{{ form_widget(form) }}
+    <div class="d-flex justify-content-end">
+        <input type="submit" class="btn btn-primary form-group" 
+        {% if button_label is defined %} 
+            value="{{ button_label }}" 
+        {% else %} 
+            value="Créer cette annonce"
+        {% endif %} >
+    </div>
+{{ form_end(form) }}
+{% endblock %}
+
+{% block javascripts %}
+<script src="/js/add_remove_image_ad.js"></script>
+{% endblock %}

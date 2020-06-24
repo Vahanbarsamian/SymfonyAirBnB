@@ -1,0 +1,53 @@
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+    <a class="navbar-brand" href="#">SymBnB</a>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarColor02" aria-controls="navbarColor02" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+    </button>
+    
+    <div class="collapse navbar-collapse" id="navbarColor02">
+        <ul class="navbar-nav mr-auto">
+            <li class="nav-item active">
+                <a class="nav-link" href="{{path('home')}}">Home <span class="sr-only">(current)</span></a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="{{path('list_ad')}}">Locations</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="#">About</a>
+            </li>
+        </ul>
+        <ul class="navbar-nav text-center col-sm-4 col-md-4 col-lg-2 p-0">
+            {% if not app.user %}
+                <li class="nav-item dropdown mx-auto">
+                    <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        Menu
+                    </a>
+                    <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
+                        <a class="dropdown-item" href="{{path('account_login')}}">Connexion</a>
+                        <a class="dropdown-item" href="{{path('account_register')}}">Inscription</a>
+                    </div>
+                </li>
+            {% endif %}
+            {% if app.user %}
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        <img src="{{app.user.picture}}" class="img-thumbnail img-fluid rounded-circle" style="max-width:20%;" alt="Avatar de {{app.user.fullName}}">
+                        {{app.user.fullName}}
+                    </a>
+                    <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
+                        <a class="dropdown-item" href="{{path('create_ad')}}">Nouvelle annonce</a>
+                        <div class="dropdown-divider"></div>
+                        <a class="dropdown-item" href="{{path('account_user')}}">Mon compte</a>
+                        <a class="dropdown-item" href="{{path('password_update')}}">Changer le mot de passe</a>
+                        <div class="dropdown-divider"></div>
+                        <a class="dropdown-item" href="{{path('account_logout')}}">Deconnexion</a>
+                    </div>
+                </li>
+            {% endif %}
+        </ul>
+        <form class="form-inline my-2 ml-lg-5">
+            <input class="form-control mr-sm-2" type="text" placeholder="Search">
+            <button class="btn btn-secondary my-2 my-sm-0" type="submit">Search</button>
+        </form>
+    </div>
+</nav>

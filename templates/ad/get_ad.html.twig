@@ -1,0 +1,96 @@
+{% extends 'base.html.twig' %}
+
+{% block title %} / Liste locations{% endblock %}
+
+{% block body %}
+
+<div>
+    <div class="row get-ad-div"
+        style="background-image:url('{{ad.coverImage}}');"><div class="overlay"></div>
+        <h1 class="mt-5 mb-3 text-center mx-auto">{{titre}}</h1>
+        <div class="col-8 my-2 mx-auto container">
+            <div class="card bg-light border border-dark">
+                <div class="card-header text-center rounded h4">
+                    {{ad.rooms}} {% if ad.rooms > 1 %} Chambres {% else %} Chambre {% endif %} &agrave;
+                    <strong>{{ad.price}} &euro; / nuit</strong>
+                    <div class="my-2"><small>Pas encore not&eacute;</small></div>
+                </div>
+                <img src="{{ad .coverImage}}" class="img-fluid img-thumbail rounded" style="width:100%; display:block"
+                    alt="image de l'appartement">
+                <div class="row">
+                    <div class="col-8 card-body p-5 mx-auto">
+                        <h3 class="card-title">{{ad.title}}</h3>
+                        <div class="card-subtitle text-muted my-3 h4">{{ad.introduction}}</div>
+                        <div class="card-text">
+                            {{ad.content| raw}}
+                        </div>
+                        {% if ad.images|length >0 %}
+                            <div id="carouselExampleIndicators" class="carousel slide" data-ride="carousel" data-interval="false">
+                                <ol class="carousel-indicators">
+                                    {% for image in ad.images %}
+                                        <li data-target="#carouselExampleIndicators" data-slide-to="{{loop.index0}}" {% if loop.first %} class="active" {% endif %} ></li>
+                                    {% endfor %}
+                                </ol>
+                                <div class="carousel-inner mx-auto rounded bg-dark mb-4 border border-dark" style="width:60%">
+                                    {% for image in ad.images %}
+                                        <div class="carousel-item {% if loop.first %}active{% endif %}">
+                                            <img src="{{image.url}}" class="d-block w-60 img" alt="image {{ad.title}}">
+                                        <div class="carousel-caption d-none d-md-block">
+                                            <h6>{{ad.title}}</h6>
+                                            <small>{{image.caption}}</small>
+                                        </div>
+                                        </div>
+                                    {% endfor %}
+                                </div>
+                                <a class="carousel-control-prev" href="#carouselExampleIndicators" role="button" data-slide="prev">
+                                    <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                                    <span class="sr-only">Previous</span>
+                                </a>
+                                <a class="carousel-control-next" href="#carouselExampleIndicators" role="button" data-slide="next">
+                                    <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                                    <span class="sr-only">Next</span>
+                                </a>
+                            </div>
+                        {% endif %}
+                        <div class="d-flex">
+                            <div class="p-2">
+                                <a href="{{path('list_ad')}}" class="btn btn-primary">Retour aux offres</a>
+                            </div>
+                            <div class="p-2">
+                                <a href="#" class="btn btn-success">R&eacute;server</a>
+                            </div>
+                            {% if app.user %}
+                                {% if ad.author is same as(app.user) %}
+                                    <div class="ml-auto p-2">
+                                        <a href="{{path('edit_ad',{'slug':ad.slug})}}" class="btn btn-warning">Modifier</a>
+                                    </div>
+                                {% endif %}
+                            {% endif %}
+                        </div>
+                    </div>   
+                    <div class="col-md-10 mx-auto col-lg-4">
+                    {% set a = ad.author %}
+                        <div class="row align-items-center">
+                            <div class="col-lg-2 col-md-12 col-sm-12 mt-5 ml-sm-5 ml-md-3 mr-md-1 mr-lg-2 ml-lg-0 pl-lg-0">
+                                <a href="{{path('account_profil',{'slug':a.slug})}}" class="stretched-link text-decoration-none">
+                                    <img src="{{a.picture}}" class="rounded-circle img-thumbail thumbail d-block" title="Auteur: {{a.fullName}}" alt="image de {{a.fullname}}">
+                                    </div>
+                                    <div class="col-sm-10 col-md-10 col-lg-8 ml-md-1 pl-4 pr-4 pb-4 mt-sm-2 mt-md-2 mt-lg-5 mx-sm-auto ml-lg-3">
+                                    <h5>{{a.fullname}}</h5>
+                                    <p class="badge badge-primary">{{a.ads|length}} annonces</p>
+                                </a>
+                            </div>
+                            <div class="col-lg-11 pl-lg-0 mt-lg-2 text-muted h6">
+                            {{a.introduction}}
+                            </div>
+                            <div class="row col-11">
+                                {{a.description|raw}}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
