@@ -99,11 +99,17 @@ class User implements UserInterface
     private $ads;
 
     /**
+     * @ORM\ManyToMany(targetEntity=Role::class, mappedBy="users")
+     */
+    private $roles;
+
+    /**
      * Constructor
      */
     public function __construct()
     {
         $this->ads = new ArrayCollection();
+        $this->roles = new ArrayCollection();
     }
 
     /**
@@ -262,11 +268,17 @@ class User implements UserInterface
     }
 
     /**
-    * Returns the roles granted to the user.
+     * Returns the roles granted to the user.
+    *
+    * @return Collection|Role[]
     */
     public function getRoles()
     {
-        return ['ROLE_USER'];
+        $userRoles = $this->roles->map(function ($role) {
+            return $role->getTitle();
+        })->toArray();
+        $userRoles[] = 'ROLE_USER';
+        return $userRoles;
     }
 
     /**
@@ -333,6 +345,26 @@ class User implements UserInterface
     public function setConfirmPassword(string $confirmPassword)
     {
         $this->confirmPassword = $confirmPassword;
+
+        return $this;
+    }
+
+    public function addRole(Role $role): self
+    {
+        if (!$this->roles->contains($role)) {
+            $this->roles[] = $role;
+            $role->addUser($this);
+        }
+
+        return $this;
+    }
+
+    public function removeRole(Role $role): self
+    {
+        if ($this->roles->contains($role)) {
+            $this->roles->removeElement($role);
+            $role->removeUser($this);
+        }
 
         return $this;
     }

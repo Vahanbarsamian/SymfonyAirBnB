@@ -11,6 +11,8 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Doctrine\Common\Collections\ArrayCollection;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 
 class AdController extends AbstractController
 {
@@ -40,6 +42,8 @@ class AdController extends AbstractController
      * @return Response
      *
      * @Route("/ad/create", name="create_ad")
+     *
+     * @IsGranted("ROLE_USER")
      */
     public function addAction(Request $request, EntityManagerInterface $manager)
     {
@@ -80,8 +84,7 @@ class AdController extends AbstractController
             'ad/get_ad.html.twig',
             [
                 'titre' => $ad->getTitle(),
-                'ad' => $ad,
-                'userSlug'=> null !== $this->getUser()->getSlug() ?  $this->getUser():null
+                'ad' => $ad
             ]
         );
     }
@@ -92,6 +95,8 @@ class AdController extends AbstractController
     * @return Ad
     *
     * @Route("/ad/edit/{slug}", name="edit_ad")
+    *
+    * @Security("is_granted('ROLE_USER') and user === ad.getAuthor()", message="Vous ne pouvez pas modifier l'annonce d'un tiers")
     */
     public function editAction(Request $request, Ad $ad, EntityManagerInterface $manager)
     {
@@ -131,5 +136,44 @@ class AdController extends AbstractController
             'form'=>$form->createView()
             ]
         );
+    }
+
+    /**
+     * Undocumented function
+     *
+     * @param Ad $ad
+     * @param EntityManagerInterface $manager
+     *
+     * @return Response
+     *
+     * @Route("/ad/delete/{slug}", name="delete_ad")
+     *
+     * @Security("is_granted('ROLE_USER') and user === ad.getAuthor()")
+     */
+    public function deleteAction(Ad $ad, EntityManagerInterface $manager)
+    {
+        $this->removeImages($ad, $manager);
+        $manager->remove($ad);
+        $manager->flush();
+        $this->addFlash('success', "l'annonce {ad->getTitle()} à bien été supprimée");
+        return $this->redirectToRoute('list_ad');
+    }
+
+
+    /**
+     * This method only delete images join to an ad
+     *
+     * @param Ad $ad
+     * @param EntityManagerInterface $manager
+     * @return void
+     */
+    public function removeImages($ad, $manager)
+    {
+        $images = $ad->getImages();
+        foreach ($images as $image) {
+            $ad->removeImage($image);
+            $manager->remove($image);
+            $manager->persist($ad);
+        }
     }
 }

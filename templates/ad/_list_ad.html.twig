@@ -1,5 +1,7 @@
 {% set url = path('get_ad', {'slug':ad.slug }) %}
-<div class="col-4 my-2">
+{% set modify = path('edit_ad', {'slug':ad.slug}) %}
+
+<div class="col-xs-12 col-sm-12 col-md-6 col-lg-4 my-2">
     <div class="card bg-light border border-dark">
         <div class="card-header text-center rounded">
             {{ ad.rooms }}
@@ -23,7 +25,13 @@
             <div class="card-text">
                 {{ad.content | raw}}
             </div>
-            <a href="{{url}}" class="btn btn-primary my-2">Voir l'offre</a>
+            <div class="d-flex justify-content-around justify-content-sm-center justify-content-md-center justify-content-lg-start p-xs-0 flex-wrap">
+                <a href="{{url}}" class="btn btn-primary my-2">Voir l'offre</a>
+                {% if app.user is same as (ad.author) %}
+                    <a href="{{modify}}" class="btn btn-warning my-2 mx-xs-2 mx-sm-2">Modifier</a>
+                    <a href="{{path('delete_ad', {'slug':ad.slug})}}" class="btn btn-danger my-2 flex-shrink-1" onclick="return confirm(`Confirmer la suppression de : {{ad.title}} ?`)">Supprimer</a>
+                {% endif %}
+            </div>
         </div>
     </div>
 </div>

@@ -9,6 +9,7 @@ use App\Entity\Image;
 use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Common\Persistence\ObjectManager;
 use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
+use App\Entity\Role;
 
 class AdFixtures extends Fixture
 {
@@ -22,6 +23,26 @@ class AdFixtures extends Fixture
     public function load(ObjectManager $manager)
     {
         $faker = Factory::create('fr_FR');
+
+        // Gestion des Roles
+        $adminRole = new Role();
+        $adminRole->setTitle('ROLE_ADMIN');
+        $manager->persist($adminRole);
+
+        $userRole = new Role();
+        $userRole->setTitle('ROLE_USER');
+        $manager->persist($userRole);
+        
+        $adminUser = new User();
+        $adminUser->setFirstName('Vahan')
+        ->setLastName('Barsamian')
+        ->setEmail('vahanbarsamian@gmail.com')
+        ->setIntroduction('Jeune développeur de 50 ans réalise un voeux')
+                ->setDescription("<p>Jeune développeur de 50 ans j'ai entammé une reconversion en PHP et Symfony notamment</p>")
+                ->setHash($this->encoder->encodePassword($adminUser, 'password'))
+                ->setPicture('https://avataaars.io/?avatarStyle=Circle&topType=ShortHairShortCurly&accessoriesType=Prescription01&hairColor=BrownDark&facialHairType=Blank&clotheType=BlazerShirt&eyeType=Default&eyebrowType=DefaultNatural&mouthType=Smile&skinColor=Pale')
+                ->addRole($adminRole);
+        $manager->persist($adminUser);
 
         // Gestion des Users
         $genres = ["male","female"];
@@ -41,8 +62,8 @@ class AdFixtures extends Fixture
                 ->setIntroduction($faker->paragraph(2))
                 ->setDescription('<p>'.join('</p><p>', $faker->paragraphs(3)).'</p>')
                 ->setHash($hash)
-                ->setPicture($picture);
-                
+                ->setPicture($picture)
+                ->addRole($userRole);
             $manager->persist($user);
             $users[]= $user;
         }

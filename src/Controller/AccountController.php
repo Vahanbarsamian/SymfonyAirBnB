@@ -12,7 +12,9 @@ use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Component\Security\Http\Authentication\AuthenticationUtils;
 use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
 
@@ -83,6 +85,8 @@ class AccountController extends AbstractController
      * @return Response
      *
      * @Route("/account/profil/edit", name="profil_edit")
+     *
+     * @IsGranted("ROLE_USER")
      */
     public function profilEditAction(Request $request, EntityManagerInterface $manager)
     {
@@ -109,6 +113,8 @@ class AccountController extends AbstractController
     * @return Response
     *
     * @Route("/account/update/password", name="password_update")
+    *
+    * @IsGranted("ROLE_USER")
     */
     public function passwordUpdateAction(
         Request $request,
@@ -148,6 +154,8 @@ class AccountController extends AbstractController
      * @return Response
      *
      * @Route("/account/user", name="account_user")
+     *
+     * @Security("is_granted('ROLE_USER')", message="Vous ne pouvez pas acceder au profil d'un tiers")
      */
     public function userAccountAction()
     {

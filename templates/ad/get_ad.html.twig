@@ -25,7 +25,7 @@
                             {{ad.content| raw}}
                         </div>
                         {% if ad.images|length >0 %}
-                            <div id="carouselExampleIndicators" class="carousel slide" data-ride="carousel" data-interval="false">
+                            <div id="carouselExampleIndicators" class="carousel slide d-xs-none d-sm-none d-lg-block" data-ride="carousel" data-interval="false">
                                 <ol class="carousel-indicators">
                                     {% for image in ad.images %}
                                         <li data-target="#carouselExampleIndicators" data-slide-to="{{loop.index0}}" {% if loop.first %} class="active" {% endif %} ></li>
@@ -52,38 +52,44 @@
                                 </a>
                             </div>
                         {% endif %}
-                        <div class="d-flex">
-                            <div class="p-2">
-                                <a href="{{path('list_ad')}}" class="btn btn-primary">Retour aux offres</a>
+                        <div class="row align-items-center text-center">
+                            <div class="d-flex col-xs-12 col-sm-12 col-md-12 col-lg-6 text-sm-center justify-content-xs-center justify-content-sm-center justify-content-md-center justify-content-lg-start">
+                                <div class="p-2 mx-xs-auto mx-sm-auto mx-md-0 mx-lg-0">
+                                    <a href="{{path('list_ad')}}" class="btn btn-primary">Retour aux offres</a>
+                                    <a href="#" class="btn btn-success my-2">R&eacute;server</a>
+                                </div>
                             </div>
-                            <div class="p-2">
-                                <a href="#" class="btn btn-success">R&eacute;server</a>
-                            </div>
-                            {% if app.user %}
                                 {% if ad.author is same as(app.user) %}
-                                    <div class="ml-auto p-2">
-                                        <a href="{{path('edit_ad',{'slug':ad.slug})}}" class="btn btn-warning">Modifier</a>
+                                    <div class="d-flex col-xs-12 col-sm-12 col-md-12 col-lg-6 text-sm-center justify-content-xs-center justify-content-sm-center justify-content-md-center justify-content-lg-end">
+                                        <div class="p-2 mx-xs-auto mx-sm-auto mx-lg-0">
+                                            <a href="{{path('edit_ad',{'slug':ad.slug})}}" class="btn btn-warning">Modifier</a>
+                                            <a href="{{path('delete_ad', {'slug':ad.slug})}}" 
+                                            class="btn btn-danger my-2" 
+                                            onclick="return confirm(`Confirmer la suppression de : {{ad.title}} ?`)">Supprimer</a>
+                                        </div>
                                     </div>
                                 {% endif %}
-                            {% endif %}
                         </div>
                     </div>   
                     <div class="col-md-10 mx-auto col-lg-4">
                     {% set a = ad.author %}
                         <div class="row align-items-center">
-                            <div class="col-lg-2 col-md-12 col-sm-12 mt-5 ml-sm-5 ml-md-3 mr-md-1 mr-lg-2 ml-lg-0 pl-lg-0">
+                            <div class=" col-xs-12 col-sm-12 col-md-12 col-lg-2 mt-5 ml-sm-5 ml-md-3 mr-md-1 mr-lg-2 ml-lg-0 pl-lg-0">
                                 <a href="{{path('account_profil',{'slug':a.slug})}}" class="stretched-link text-decoration-none">
-                                    <img src="{{a.picture}}" class="rounded-circle img-thumbail thumbail d-block" title="Auteur: {{a.fullName}}" alt="image de {{a.fullname}}">
+                                    <img src="{{a.picture}}" 
+                                    class="rounded-circle img-thumbail thumbail d-block" 
+                                    title="Auteur: {{a.fullName}}" 
+                                    alt="image de {{a.fullname}}">
                                     </div>
-                                    <div class="col-sm-10 col-md-10 col-lg-8 ml-md-1 pl-4 pr-4 pb-4 mt-sm-2 mt-md-2 mt-lg-5 mx-sm-auto ml-lg-3">
+                                    <div class="col-xs-12 col-sm-10 col-md-10 col-lg-8 ml-md-1 pl-4 pr-4 pb-4 mt-sm-2 mt-md-2 mt-lg-5 mx-sm-auto ml-lg-3">
                                     <h5>{{a.fullname}}</h5>
                                     <p class="badge badge-primary">{{a.ads|length}} annonces</p>
                                 </a>
                             </div>
-                            <div class="col-lg-11 pl-lg-0 mt-lg-2 text-muted h6">
+                            <div class="col-lg-11 mx-xs-auto mx-sm-auto pl-lg-0 mt-lg-2 text-muted h6">
                             {{a.introduction}}
                             </div>
-                            <div class="row col-11">
+                            <div class="row col-11 mx-xs-0 mx-sm-0 mx-md-auto">
                                 {{a.description|raw}}
                             </div>
                         </div>
