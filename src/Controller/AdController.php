@@ -139,7 +139,7 @@ class AdController extends AbstractController
     }
 
     /**
-     * Undocumented function
+     * This method delete an ad
      *
      * @param Ad $ad
      * @param EntityManagerInterface $manager
