@@ -104,12 +104,18 @@ class User implements UserInterface
     private $roles;
 
     /**
+     * @ORM\OneToMany(targetEntity=Booking::class, mappedBy="booker")
+     */
+    private $bookings;
+
+    /**
      * Constructor
      */
     public function __construct()
     {
         $this->ads = new ArrayCollection();
         $this->roles = new ArrayCollection();
+        $this->bookings = new ArrayCollection();
     }
 
     /**
@@ -364,6 +370,37 @@ class User implements UserInterface
         if ($this->roles->contains($role)) {
             $this->roles->removeElement($role);
             $role->removeUser($this);
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|Booking[]
+     */
+    public function getBookings(): Collection
+    {
+        return $this->bookings;
+    }
+
+    public function addBooking(Booking $booking): self
+    {
+        if (!$this->bookings->contains($booking)) {
+            $this->bookings[] = $booking;
+            $booking->setBooker($this);
+        }
+
+        return $this;
+    }
+
+    public function removeBooking(Booking $booking): self
+    {
+        if ($this->bookings->contains($booking)) {
+            $this->bookings->removeElement($booking);
+            // set the owning side to null (unless already changed)
+            if ($booking->getBooker() === $this) {
+                $booking->setBooker(null);
+            }
         }
 
         return $this;

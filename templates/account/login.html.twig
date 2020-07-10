@@ -3,7 +3,7 @@
 {% block title %}/{{titre}}{% endblock %}
 {% block body %}
 {% if error %}
-    <div class="alert alert-danger p-4">Le mot de passe saisi et/ou l'identifiant sont erron&eacute;s</div>
+    <div class="alert alert-danger p-4">{{"Le mot de passe saisi et/ou l'identifiant sont erronés"| convert_encoding('UTF-8', 'ISO-8859-1')}}</div>
 {% endif %}
 <h1 class="text-center mb-5 pb-5 border-bottom border-grey mx-auto">{{titre}}</h1>
 <div class="container">
@@ -32,13 +32,13 @@
         </div>  
         <div class="d-flex col-12 p-0 form-group"> 
             <div class="row align-items-center col-12 p-0 m-0">    
-                <div class="p-2 col-sm-12 col-lg-3 d-flex align-items-center">
+                <div class="p-2 col-sm-12 col-md-9 col-lg-5 d-flex align-items-center">
                     <input type="checkbox"
                         class="form-control d-inline col-2 ml-2"
                         name="rememberMe"
                         id="check-login"
                         value="1">
-                    <label class="mb-1 d-inline col-12 p-0" for="check-login">Remember me</label>
+                    <label class="mb-1 d-inline col-12 p-0" for="check-login">Se rappeler de moi</label>
                 </div>    
                 <div class="d-flex col-sm-12 col-lg-9 justify-content-end p-0 m-0">
                     <input type="submit"

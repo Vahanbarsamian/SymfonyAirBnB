@@ -1,0 +1,35 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}/ {{ titre | raw }}{% endblock %}
+
+{% block body %}
+{% for message in app.flashes('warning') %}
+    <div class='alert alert-warning m-0 p-4'>
+        {{message|raw}}
+    </div>
+{% endfor %}
+<div class="p-5">
+    <h1 class="text-center mb-5 pb-5 border-bottom border-grey mx-auto">{{ titre | raw }}</h1>
+    <h3 class="my-5">{{ "Vous êtes sur le point d'effectuer une réservation sur l'annonce de "| convert_encoding('UTF-8', 'ISO-8859-1') }} <b>{{ad.author.fullName}}</b> , saisissez vos dates :</h3>
+    {{ form_start(form, {'attr':{'class':"form form-group"}}) }}
+    {{ form_widget(form, {'attr':{'class':"form form-group"}}) }}
+    <div class="d-flex justify-content-end">
+        <button type="submit" class="btn btn-primary">Je reserve !</button> 
+    </div>
+    {{ form_end(form) }}
+    <div>
+    <p class="h5">Que ce soit pour le travail ou pour vos vacances... vous pouvez comptez sur nous !</p>
+    </div>
+
+</div>
+<div class="row d-flex justify-content-end align-items-center">
+    <div class="mx-auto mr-md-5 mb-5 p-3">
+        <div class="col-12 d-flex d-wrap">
+            <h4>{{"Estimation du séjour suivant vos dates :"| convert_encoding('UTF-8', 'ISO-8859-1')}} <span id="amount"> </span>&euro;</h4>
+        </div>
+        <div class="col-12 d-flex d-wrap">
+            <span id="count">0</span>&nbsp; {{"nuits à" | convert_encoding('UTF-8', 'ISO-8859-1')}} {{ad.price}} / nuit
+        </div>
+    </div>
+</div>
+{% endblock %}

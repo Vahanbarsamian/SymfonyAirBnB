@@ -1,0 +1,17 @@
+{% extends "base.html.twig" %}
+
+{% block title %}Error 404 page not found{% endblock %}
+{% block body %}
+<h1 class="mt-5 mb-3 pb-5 text-center mx-auto border-grey border-bottom">Oups !!! cette page est introuvable</h1>
+<div class="row d-flex justify-content-center align-items-center">
+    <div class="col-xs-12 col-sm-12 col-lg-6 text-xs-center text-sm-center text-lg-right p-5">
+        <img src="{{asset('/img/404.png')}}"  alt="image de la page 404">
+    </div>
+    <div class="col-xs-12 col-sm-12 col-lg-6 text-xs-center text-sm-center text-lg-left p-5">
+        <h3 class="m-0 py-1 h3">La page que vous recherechez est introuvable !.</h3><br>
+        <h3 class="m-0 py-1 h3"> Mais vous pouvez retourner sur le site en suivant l'un de ses deux liens: </h3><br>
+        <a href="{{ path('home') }}" class="btn btn-primary my-2">Retour à la page d'accueil</a><br>
+        <a href="{{ path('list_ad') }}" class="btn btn-success my-2">Retour à la liste des annonces</a>
+    </div>
+</div>
+{% endblock %}

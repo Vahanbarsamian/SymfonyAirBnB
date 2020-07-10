@@ -79,3 +79,11 @@ footer {
     position: sticky;
     bottom: -90px;
 }
+
+.error {
+    background: url();
+}
+
+.endPage {
+    margin-bottom: 7rem;
+}

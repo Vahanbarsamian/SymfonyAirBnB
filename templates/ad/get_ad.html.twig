@@ -56,7 +56,7 @@
                             <div class="d-flex col-xs-12 col-sm-12 col-md-12 col-lg-6 text-sm-center justify-content-xs-center justify-content-sm-center justify-content-md-center justify-content-lg-start">
                                 <div class="p-2 mx-xs-auto mx-sm-auto mx-md-0 mx-lg-0">
                                     <a href="{{path('list_ad')}}" class="btn btn-primary">Retour aux offres</a>
-                                    <a href="#" class="btn btn-success my-2">R&eacute;server</a>
+                                    <a href="{{path('ads_add_booking',{'slug':ad.slug})}}" class="btn btn-success my-2">R&eacute;server</a>
                                 </div>
                             </div>
                                 {% if ad.author is same as(app.user) %}

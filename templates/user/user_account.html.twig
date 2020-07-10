@@ -5,17 +5,24 @@
 
 {# Img ad user title #}
 <div class=" d-flex row align-items-center justify-content-center mb-5">
-    <div class="col-2 d-flex flex-no-wrap align-items-center">
+    <div class="col-9 d-flex flex-no-wrap align-items-center justify-content-center">
         <div class="col-1 d-flex justify-content-center ">
             <div>
                 <img src="{{user.picture}}" alt="image de {{user.fullName}}" class="thumbail rounded-circle">
-            <div class="badge badge-primary col-12">
-                Annonces : {{user.ads|length}}
-            </div>
             </div>
         </div>
-        <div class="row ml-5 col-12">
-            <h2 class="col">{{user.fullName}}</h2>
+        <div class="row col-8 col-md-3 col-lg-3 ml-3 ml-md-0 ml-lg-0 d-flex justify-content-center">
+            <div class="col-12 text-center">
+                <h2 class="d-flex justify-content-center">{{user.fullName}}</h2>
+            </div>
+            <div class="badge badge-primary col-8 col-md-8 col-lg-6">
+                {{user.ads|length}} 
+                    {% if user.ads|length >1 %}
+                        Annonces 
+                    {% else %}
+                        Annonce 
+                {% endif %}
+            </div>
         </div>
     </div>
         {% if user is same as(app.user) %}
@@ -48,7 +55,7 @@
 <strong> L' annonce de {{user.fullname}}</strong>
 {% else %}
 <div class="alert alert-warning">
-   <p class="rounded">{{user.fullName }}  n'a pas encore dÃ©posÃ© d'annonce</p> 
+    <p class="rounded">{{user.fullName }} {{" n'a pas encore déposé d'annonce"| convert_encoding('UTF-8', 'ISO-8859-1')}}</p> 
 </div>
 {% endif %} </h3>
     <div class="row d-flex justify-content-between">

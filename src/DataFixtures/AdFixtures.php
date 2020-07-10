@@ -4,12 +4,13 @@ namespace App\DataFixtures;
 
 use App\Entity\Ad;
 use Faker\Factory;
+use App\Entity\Role;
 use App\Entity\User;
 use App\Entity\Image;
+use App\Entity\Booking;
 use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Common\Persistence\ObjectManager;
 use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
-use App\Entity\Role;
 
 class AdFixtures extends Fixture
 {
@@ -84,12 +85,34 @@ class AdFixtures extends Fixture
                 ->setCoverImage($imageCover)
                 ->setRooms(mt_rand(1, 3))
                 ->setAuthor($user);
+        // Nombre d'images associées aléatoires
             for ($j=1; $j<=(mt_rand(2, 5)); $j++) {
                 $image = new Image();
                 $image->setUrl($faker->imageUrl())
                     ->setCaption($faker->sentence())
                     ->setAd($ad);
                 $manager->persist($image);
+            }
+        // Nombre de réservations associées aléatoires
+            for ($r = 1; $r<= mt_rand(0, 10); $r++) {
+                // Définition des variables
+                $dateCreate = $faker->dateTimeBetween('-6 months');
+                $dateStart = $faker->dateTimeBetween('-3 months');
+                $duration = mt_rand(1, 90);
+                $dateEnd = (clone $dateStart)->modify("+ $duration days");
+                $amount = $ad->getPrice()*$duration;
+                $comment = $faker->paragraph();
+
+                $reservation = new Booking();
+                $reservation->setAd($ad)
+                    ->setBooker($user)
+                    ->setAd($ad)
+                    ->setCreateAt($dateCreate)
+                    ->setStartDate($dateStart)
+                    ->setEndDate($dateEnd)
+                    ->setAmount($amount)
+                    ->setComment($comment);
+                $manager->persist($reservation);
             }
             $manager->persist($ad);
         }
