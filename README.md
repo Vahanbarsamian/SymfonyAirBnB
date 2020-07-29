@@ -6,4 +6,4 @@
  
  Working to next step to realise comments and votes
  
- (password users: password includind admin user)
+ (password users including admin user: password )
