@@ -38,6 +38,7 @@ class Booking
     /**
      * @ORM\Column(type="datetime")
      * @Assert\GreaterThanOrEqual("today", message="La date d'arrivée doit forcemment être superieure à la date actuelle")
+     * @Assert\GreaterThan("today",message="Vous ne pouvez reserver qu'a partir de la date de demain")
      */
     private $startDate;
 

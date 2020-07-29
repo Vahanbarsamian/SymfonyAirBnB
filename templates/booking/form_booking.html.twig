@@ -1,6 +1,9 @@
 {% extends 'base.html.twig' %}
 
 {% block title %}/ {{ titre | raw }}{% endblock %}
+{% block stylesheets %}
+    <link rel="stylesheet"  href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.9.0/css/bootstrap-datepicker.min.css" integrity="sha512-mSYUmp1HYZDFaVKK//63EcZq4iFWFjxSL+Z3T/aCt4IO9Cejm03q3NKKYN6pFQzY0SBOr8h+eCIAZHPXcpZaNw==" crossorigin="anonymous" />">
+{% endblock %}
 
 {% block body %}
 {% for message in app.flashes('warning') %}
@@ -11,25 +14,97 @@
 <div class="p-5">
     <h1 class="text-center mb-5 pb-5 border-bottom border-grey mx-auto">{{ titre | raw }}</h1>
     <h3 class="my-5">{{ "Vous êtes sur le point d'effectuer une réservation sur l'annonce de "| convert_encoding('UTF-8', 'ISO-8859-1') }} <b>{{ad.author.fullName}}</b> , saisissez vos dates :</h3>
+    <fieldset class="border border-grey">
+   <legend class="text-center bg-secondary p-4 text-white rounded">{{ "Vérifiez que vos dates soient libres" | convert_encoding('UTF-8', 'ISO-8859-1') }} </legend>
     {{ form_start(form, {'attr':{'class':"form form-group"}}) }}
+    {{ form_label(form.startDate)}}
+    <div class='input-group-append '>
+        {{ form_widget(form.startDate) }}
+        <div class='input-group-text'>
+            <i class='fa fa-calendar'></i>
+        </div>
+    </div>
+    <br>
+    {{ form_label(form.endDate )}}
+    <div class='input-group-append'>
+        {{ form_widget(form.endDate ) }}
+        <div class='input-group-text'>
+            <i class='fa fa-calendar'></i>
+        </div>
+    </div>
+    <br>
     {{ form_widget(form, {'attr':{'class':"form form-group"}}) }}
     <div class="d-flex justify-content-end">
-        <button type="submit" class="btn btn-primary">Je reserve !</button> 
+        <button type="submit" class="btn btn-primary mb-5">Je reserve !</button> 
     </div>
     {{ form_end(form) }}
+    </fieldset>
     <div>
-    <p class="h5">Que ce soit pour le travail ou pour vos vacances... vous pouvez comptez sur nous !</p>
+    <p class="h5 mt-4">Que ce soit pour le travail ou pour vos vacances... vous pouvez comptez sur nous !</p>
     </div>
 
 </div>
 <div class="row d-flex justify-content-end align-items-center">
     <div class="mx-auto mr-md-5 mb-5 p-3">
         <div class="col-12 d-flex d-wrap">
-            <h4>{{"Estimation du séjour suivant vos dates :"| convert_encoding('UTF-8', 'ISO-8859-1')}} <span id="amount"> </span>&euro;</h4>
+            <h4>{{"Estimation du séjour suivant vos dates :"| convert_encoding('UTF-8', 'ISO-8859-1')}} <span id="amount">... </span>&euro;</h4>
         </div>
         <div class="col-12 d-flex d-wrap">
             <span id="count">0</span>&nbsp; {{"nuits à" | convert_encoding('UTF-8', 'ISO-8859-1')}} {{ad.price}} / nuit
         </div>
     </div>
 </div>
+{% endblock %}
+{% block javascripts %}
+<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.9.0/js/bootstrap-datepicker.min.js"></script>
+
+    <script>
+        function calculateAmount(){
+            let startDate =  $('#booking_startDate').val();
+            startDate = startDate.split('/');
+            startDate = startDate[1]+'/'+startDate[0]+'/'+startDate[2];
+            let endDate =  $('#booking_endDate').val();
+            endDate = endDate.split('/');
+            endDate = endDate[1]+'/'+endDate[0]+'/'+endDate[2];
+            if (!isNaN(Date.parse(startDate)) && !isNaN(Date.parse(endDate)) && Date.parse(endDate) > Date.parse(startDate)) {
+            startDate = Date.parse(startDate);
+            endDate =   Date.parse(endDate);
+                let interval = endDate - startDate;
+                let days = interval/(24*60*60*1000);
+                let amount = {{ ad.price }}*days;
+                $('#count').text(days);
+                $('#amount').text(amount.toLocaleString('fr-FR'));
+            }else{
+                $('#count').text("0");
+                $('#amount').text("...");
+            }
+        }
+
+    $(document).ready(function(){       
+        calculateAmount();
+        $('input#booking_startDate, input#booking_endDate').on('change',function(){
+            calculateAmount();
+        });
+                $('input#booking_startDate, input#booking_endDate').datepicker({
+                    language: "fr",
+                    format: 'dd/mm/yyyy',
+                    weekStart: 1,
+                    todayBtn: "linked",
+                    clearBtn: true,
+                    daysOfWeekHighlighted: "0,6",
+                    autoclose: true,
+                    todayHighlight: true,
+                    startDate: new Date(),
+                    datesDisabled: [
+                        {% for days in ad.getUnbookingDays() %}
+                            {% for day in days %}
+                                "{{ day | date('d-m-Y') }}",
+                            {% endfor %}
+                        {% endfor %}
+                    ]
+                });
+        
+    });
+    </script>
+
 {% endblock %}
