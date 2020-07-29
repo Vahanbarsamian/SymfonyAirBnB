@@ -5,40 +5,47 @@ namespace App\Form;
 use App\Entity\Booking;
 use App\Form\ConfigurationType;
 use Symfony\Component\Form\AbstractType;
+use App\Form\DataTransformer\DateTimeFrenchTransform;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
-use Symfony\Component\Form\Extension\Core\Type\DateType;
+use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 
 class BookingType extends ConfigurationType
 {
+
+    private $transform;
+    
+    public function __construct(DateTimeFrenchTransform $transform)
+    {
+        $this->transform = $transform;
+    }
+    
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
             ->add(
                 'startDate',
-                DateType::class,
+                TextType::class,
                 array_merge(
                     $this->getConfiguration(
                         "Date d'arrivée souhaitée",
-                        "Veuillez renseigner votre date d'arivée ici",
+                        "jj/mm/aaaa",
                         true,
                         null,
-                    ),
-                    [ "widget" => "single_text"]
+                    )
                 )
             )
             ->add(
                 'endDate',
-                DateType::class,
+                TextType::class,
                 array_merge(
                     $this->getConfiguration(
                         "Date de départ estimée",
-                        "Veuillez renseigner votre date de départ",
+                        "jj/mm/aaaa",
                         true,
                         null
-                    ),
-                    [ "widget" => "single_text"]
+                    )
                 )
             )
             ->add(
@@ -51,6 +58,8 @@ class BookingType extends ConfigurationType
                 )
             )
         ;
+        $builder-> get('startDate')->addModelTransformer($this->transform);
+        $builder-> get('endDate')->addModelTransformer($this->transform);
     }
 
     public function configureOptions(OptionsResolver $resolver)

@@ -85,6 +85,7 @@ class AdFixtures extends Fixture
                 ->setCoverImage($imageCover)
                 ->setRooms(mt_rand(1, 3))
                 ->setAuthor($user);
+
         // Nombre d'images associées aléatoires
             for ($j=1; $j<=(mt_rand(2, 5)); $j++) {
                 $image = new Image();
@@ -93,6 +94,7 @@ class AdFixtures extends Fixture
                     ->setAd($ad);
                 $manager->persist($image);
             }
+            
         // Nombre de réservations associées aléatoires
             for ($r = 1; $r<= mt_rand(0, 10); $r++) {
                 // Définition des variables

@@ -2,23 +2,24 @@
 
 namespace App\Controller;
 
+use DateTimeZone;
 use App\Entity\Ad;
 use App\Entity\Booking;
 use App\Form\BookingType;
-use DateTimeZone;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Validator\Constraints\Date;
+use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
-use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 
 class BookingController extends AbstractController
 {
 
     /**
-     * This method alloaw to add a reservation
+     * This method allow to add a reservation
+     *
      * @Route("/booking/ad/{slug}", name="ads_add_booking")
      * @IsGranted("ROLE_USER")
      */
@@ -31,7 +32,7 @@ class BookingController extends AbstractController
             $dateStart = $booking->getStartDate()->getTimestamp();
             $dateEnd = $booking->getEndDate()->getTimestamp();
             $booking->setAd($ad)
-            ->setBooker($this->getUser());
+                    ->setBooker($this->getUser());
             if ($booking->unvalidateDays()) {
                 $unvalidateDays = $booking->unvalidateDays();
                 $this->addFlash(
