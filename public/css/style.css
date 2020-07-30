@@ -101,3 +101,6 @@ fieldset{
     -ms-border-radius: 8px;
     -o-border-radius: 8px;
 }
+.list-group-item {
+    background-color: transparent;
+}

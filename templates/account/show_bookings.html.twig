@@ -1,0 +1,76 @@
+{% extends "base.html.twig" %}
+
+{% block title %}/{{titre}}{% endblock %}
+
+{% block body %}
+<h1 class="text-center mb-5 pb-5 border-bottom border-grey mx-auto">{{titre}}</h1>
+    <div class="my-5">
+        <h3 class="ml-5 mb-5 col-6 text-center">{{ ' Retrouvez ici toutes vos réservations passées et à venir... ' | convert_encoding('UTF-8', 'ISO-8859-1') }}</h3>
+    </div>
+    <div class="container">
+    {% for booking in app.user.bookings %}
+    {% set ad = booking.ad %}
+    <div class="d-flex align-items-center justify-content-center">
+        {% if loop.index % 2 != 0 %}
+            <fieldset class='bg-secondary text-white row col-12 my-5 d-flex align-items-center'>
+                <legend class="text-center col-5 bg-dark rounded">
+                    <h4 class="col-12"> {{ "Réservation : " | convert_encoding('UTF-8', 'ISO-8859-1')~ loop.index}}</h4>
+                </legend>
+                <div class="mb-4 col-6"> 
+                    <p><strong>Auteur :</strong><a href="{{ path('account_profil',{'slug': ad.author.slug }) }}" class="text-white text-decoration-none"> 
+                    <img src="{{ad.author.picture }}" alt="avatar de l'auteur" class="thumbail rounded-circle">&nbsp;{{ ad.author.fullname }}</a> </p>
+                    <a href="{{ path('get_ad',{'slug':ad.slug}) }}"><img src="{{ad.coverImage}}" alt="image de la location {{ad.title}}" class="img-fluid img-thumbnail rounded"></a>
+                </div>
+                <div class="col-6">
+                    <ul class="text-left list-group list-group-flush mb-4">
+                        <li class="list-group-item">{{ 'N° de réservation :' | convert_encoding('UTF-8', 'ISO-8859-1') }}  <strong>{{ booking.id }}</strong></li>
+                        <li class="list-group-item">Nom de l'annonce : <strong>{{ ad.title }}</strong></li>
+                        <li class="list-group-item">{{ ' Prise de réservation : ' | convert_encoding('UTF-8', 'ISO-8859-1') }} <strong>{{ booking.createAt | format_datetime('full', 'none', locale='fr') }}</strong></li>
+                        <li class="list-group-item">Du <strong>{{booking.startDate | format_datetime('full', 'none', locale='fr')}}</strong> au <strong>{{ booking.endDate  | format_datetime('full', 'none', locale='fr') }}</strong></li>
+                        <li class="list-group-item">Soit <strong>{{booking.duration}} nuits</strong> &agrave; <strong>{{ ad.price}} / nuits</strong></li>
+                        <li class="list-group-item">{{ ' Montant du séjour : ' | convert_encoding('UTF-8', 'ISO-8859-1') }}<strong>{{booking.amount}}&euro;</strong></li>
+                        <li class="list-group-item">{{ ' Commentaire : ' | convert_encoding('UTF-8', 'ISO-8859-1') }}
+                        {% if booking.comment %}
+                            {{booking.comment}}
+                        {% else %}
+                            <strong>{{ ' Aucun commentaire déposé ' | convert_encoding('UTF-8', 'ISO-8859-1') }}</strong>
+                        {% endif %}
+                        </li>
+                    </ul>
+                </div>
+            </fieldset>
+        {% else %}
+        {# Reverse the display direction #}
+            <fieldset class='row col-12 my-5 d-flex align-items-center'>
+                <legend class="col-5 bg-dark text-white rounded" style="position: relative; top: -3px;left: 643px; width: 40%;">
+                    <h4 class="col-12 text-center"> {{ "Réservation : " | convert_encoding('UTF-8', 'ISO-8859-1')~ loop.index}}</h4>
+                </legend>
+                <div class="col-6 my-auto">
+                    <ul class="text-left list-group list-group-flush mb-4">
+                        <li class="list-group-item">{{ 'N° de réservation :' | convert_encoding('UTF-8', 'ISO-8859-1') }}  <strong>{{ booking.id }}</strong></li>
+                        <li class="list-group-item">Nom de l'annonce : <strong>{{ ad.title }}</strong></li>
+                        <li class="list-group-item">{{ ' Prise de réservation : ' | convert_encoding('UTF-8', 'ISO-8859-1') }} <strong>{{ booking.createAt | format_datetime('full', 'none', locale='fr') }}</strong></li>
+                        <li class="list-group-item">Du <strong>{{booking.startDate | format_datetime('full', 'none', locale='fr')}}</strong> au <strong>{{ booking.endDate  | format_datetime('full', 'none', locale='fr') }}</strong></li>
+                        <li class="list-group-item">Soit <strong>{{booking.duration}} nuits</strong> &agrave; <strong>{{ ad.price}} / nuits</strong></li>
+                        <li class="list-group-item">{{ ' Montant du séjour : ' | convert_encoding('UTF-8', 'ISO-8859-1') }}<strong>{{booking.amount}}&euro;</strong></li>
+                        <li class="list-group-item">{{ ' Commentaire : ' | convert_encoding('UTF-8', 'ISO-8859-1') }}
+                        {% if booking.comment %}
+                            {{booking.comment}}
+                        {% else %}
+                            <strong>{{ ' Aucun commentaire déposé ' | convert_encoding('UTF-8', 'ISO-8859-1') }}</strong>
+                            {% endif %}
+                        {{booking.comment}}</li>
+                    </ul>
+                </div>
+                <div class="mb-4 col-6 text-right"> 
+                    <p><strong>Auteur :</strong><a href="{{ path('account_profil',{'slug': ad.author.slug }) }}" class="text-dark text-decoration-none"> 
+                    <img src="{{ad.author.picture }}" alt="avatar de l'auteur" class="thumbail rounded-circle">&nbsp;{{ ad.author.fullname }}</a></p>
+                    <a href="{{ path('get_ad',{'slug':ad.slug}) }}"><img src="{{ad.coverImage}}" alt="image de la location {{ad.title}}" class="img-fluid img-thumbnail rounded"></a>
+                </div>
+            </fieldset>
+        {% endif %}
+    </div> 
+    {% endfor %}
+    </div>
+
+{% endblock %}

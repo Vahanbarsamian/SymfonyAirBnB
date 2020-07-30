@@ -168,4 +168,21 @@ class AccountController extends AbstractController
             ]
         );
     }
+
+    /**
+     * This method redirect to user bookings view
+     *
+     * @return Response
+     *
+     * @Route("/account/show/bookings", name="account_bookings")
+     */
+    public function bookings()
+    {
+        return $this->render(
+            'account/show_bookings.html.twig',
+            [
+                "titre"=>"Liste de vos réservations"
+            ]
+        );
+    }
 }
