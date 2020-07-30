@@ -2,11 +2,11 @@
 
  Creation of an Airbnb project web site to practice Symfony
  
- identification
- Roles
- users
- Ads
- booking with datapicker front and back
+ -identification (password and login)
+ -Roles
+ -users
+ -Ads
+ -booking with datapicker front and back part
  
  Actually the booking part is functionnal(back and front parts)
  
