@@ -1,6 +1,12 @@
 # SymfonyAirBnB
 
- Creation of an Airbnb to practice Symfony
+ Creation of an Airbnb project web site to practice Symfony
+ 
+ identification
+ Roles
+ users
+ Ads
+ booking with datapicker front and back
  
  Actually the booking part is functionnal(back and front parts)
  
