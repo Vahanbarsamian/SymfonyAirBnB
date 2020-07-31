@@ -15,7 +15,7 @@ class ConfigurationType extends AbstractType
     protected function getConfiguration(string $label, string $placeholder, $required = true, $class = null) :array
     {
         return [
-            'label'=>$label,
+            'label'=>\utf8_encode($label),
             'attr'=>[
                 'placeholder'=>$placeholder,
                 'class'=>$class

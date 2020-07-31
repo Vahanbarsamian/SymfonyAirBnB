@@ -3,7 +3,7 @@
 {% block title %}{{titre}}{% endblock %}
 {% form_theme form '/ad/_ad_theme_images.html.twig' %}
 {% block body %}
-<h1 class="text-center mb-5 pb-5 border-bottom border-grey mx-auto">{{titre}}</h1>
+<h1 class="text-center mb-5 pb-5 border-bottom border-grey mx-auto">{{titre| convert_encoding('UTF-8', 'ISO-8859-1')}}</h1>
 {{ form_start(form, {'attr':{'class':'form-group'}}) }}
 {{ form_widget(form) }}
     <div class="d-flex justify-content-end">
@@ -11,7 +11,7 @@
         {% if button_label is defined %} 
             value="{{ button_label }}" 
         {% else %} 
-            value="CrÃ©er cette annonce"
+            value="{{ ' Créer cette annonce ' | convert_encoding('UTF-8', 'ISO-8859-1') }}"
         {% endif %} >
     </div>
 {{ form_end(form) }}

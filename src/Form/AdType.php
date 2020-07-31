@@ -52,7 +52,7 @@ class AdType extends ConfigurationType
                 'images',
                 CollectionType::class,
                 [
-                    'label'=>"Images complémentaires",
+                    'label'=> "Images supplementaires",
                     'label_attr'=>["class"=>"font-weight-bold border-top my-4 border-grey"],
                     'entry_type'=> ImageType::class,
                     'entry_options'=>['label'=>false],
