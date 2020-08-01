@@ -24,6 +24,8 @@
                         <div class="card-text">
                             {{ad.content| raw}}
                         </div>
+
+                        {# Ici commence le caroussel #}
                         {% if ad.images|length >0 %}
                             <div id="carouselExampleIndicators" class="carousel slide d-xs-none d-sm-none d-lg-block" data-ride="carousel" data-interval="false">
                                 <ol class="carousel-indicators">
@@ -52,6 +54,8 @@
                                 </a>
                             </div>
                         {% endif %}
+
+                        {# Position des boutons retour et réserver #}
                         <div class="row align-items-center text-center">
                             <div class="d-flex col-xs-12 col-sm-12 col-md-12 col-lg-6 text-sm-center justify-content-xs-center justify-content-sm-center justify-content-md-center justify-content-lg-start">
                                 <div class="p-2 mx-xs-auto mx-sm-auto mx-md-0 mx-lg-0">
@@ -70,7 +74,9 @@
                                     </div>
                                 {% endif %}
                         </div>
-                    </div>   
+                    </div>
+
+                    {# Ici commence la partie réservée a l'auteur de l'annonce #}   
                     <div class="col-md-10 mx-auto col-lg-4">
                     {% set a = ad.author %}
                         <div class="row align-items-center">
@@ -98,5 +104,48 @@
             </div>
         </div>
     </div>
+</div>
+
+{# Ici commence les commentaires clients #}
+<div class="col-8  mx-auto p-3">
+    <hr>
+    <h3 class="mb-5">
+        {% if ad.comments|length >0 %}
+            Avis Clients 
+        {% else %}
+            Pas encore d'avis clients sur ce bien... Soyez le premier en réservant dès maintenant !!!
+        {% endif %}  
+    </h3>
+    {% if ad.comments|length >0 %}
+        <div class="row col-12 d-flex align-items-start border border-dark rounded p-4 mb-4">
+            {% for comment in ad.comments %}
+                <div class="col-12 col-md-12 mx-auto mx-lg-0 col-lg-7">
+                    <div class="ml-1">
+                        Auteur de l'avis : 
+                            <strong>
+                                {{ comment.author.fullName }}
+                            </strong>
+                    </div>
+                    <div class="ml-3">
+                        Créé le : 
+                            <strong>
+                                {{ comment.creatAt |  format_datetime('full', 'none', locale='fr')}}
+                            </strong>
+                    </div>
+                    <div class="ml-5">A écrit : 
+                        <blockquote>
+                            <p><strong>
+                                "{{comment.content}}"
+                            </strong></p>
+                        </blockquote>
+                    </div>
+                    
+                </div>
+                <div class="col-12 col-md-12 col-lg-5 mx-auto text-center text-md-center">
+                    <p class="badge badge-primary h3 p-3"><strong>{{comment.author.fullName}}</strong> à noté ce bien : <strong>{{comment.rating}}</strong> / 5</p>
+                </div>
+            {% endfor %}
+        </div>
+    {% endif %}
 </div>
 {% endblock %}

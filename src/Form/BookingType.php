@@ -29,7 +29,7 @@ class BookingType extends ConfigurationType
                 TextType::class,
                 array_merge(
                     $this->getConfiguration(
-                        "Date d'arrivée souhaitée",
+                        \utf8_decode("Date d'arrivée souhaitée"),
                         "jj/mm/aaaa",
                         true,
                         null,
@@ -41,7 +41,7 @@ class BookingType extends ConfigurationType
                 TextType::class,
                 array_merge(
                     $this->getConfiguration(
-                        "Date de départ estimée",
+                        \utf8_decode("Date de départ estimée"),
                         "jj/mm/aaaa",
                         true,
                         null
