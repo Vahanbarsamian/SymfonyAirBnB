@@ -7,6 +7,7 @@ use Doctrine\ORM\Mapping\PreUpdate;
 use Doctrine\ORM\Mapping\PrePersist;
 use App\Repository\CommentRepository;
 use Doctrine\ORM\Mapping\HasLifecycleCallbacks;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * @ORM\Entity(repositoryClass=CommentRepository::class)
@@ -28,11 +29,23 @@ class Comment
 
     /**
      * @ORM\Column(type="integer")
+     * @Assert\Range(
+     *  min = 1,
+     *  max = 5,
+     *  minMessage = "La note mini ne peut être inferieur à {{ limit }}",
+     *  maxMessage = "La note maxi ne peut exceder {{ limit }}"
+     * )
      */
     private $rating;
 
     /**
      * @ORM\Column(type="text")
+     * @Assert\Length(
+     *  min= 10,
+     *  max= 255,
+     *  minMessage="Votre commentaire doit au minimum contenir {{ limit }} caractères",
+     *  maxMessage="Votre commentaire doit au maximum contenir {{ limit }} caractères"
+     * )
      */
     private $content;
 
@@ -73,7 +86,9 @@ class Comment
      */
     public function createdAt()
     {
-        if ($this->creatAt) return $this->creatAt;
+        if ($this->creatAt) {
+            return $this->creatAt;
+        }
         return $this->creatAt = new \DateTime('now');
     }
 

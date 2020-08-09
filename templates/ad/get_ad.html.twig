@@ -13,7 +13,12 @@
                 <div class="card-header text-center rounded h4">
                     {{ad.rooms}} {% if ad.rooms > 1 %} Chambres {% else %} Chambre {% endif %} &agrave;
                     <strong>{{ad.price}} &euro; / nuit</strong>
-                    <div class="my-2"><small>Pas encore not&eacute;</small></div>
+                    <div class="my-2">
+                        <small> 
+                            {% if ad.getAvgRatings %}note moyenne: {% endif %}  
+                            {% include "partials/rating_stars.html.twig" with {'rating': ad.getAvgRatings}%}
+                        </small>
+                    </div>
                 </div>
                 <img src="{{ad .coverImage}}" class="img-fluid img-thumbail rounded" style="width:100%; display:block"
                     alt="image de l'appartement">
@@ -80,22 +85,22 @@
                     <div class="col-md-10 mx-auto col-lg-4">
                     {% set a = ad.author %}
                         <div class="row align-items-center">
-                            <div class=" col-xs-12 col-sm-12 col-md-12 col-lg-2 mt-5 ml-sm-5 ml-md-3 mr-md-1 mr-lg-2 ml-lg-0 pl-lg-0">
+                            <div class="  col-12 d-flex justify-content-center text-lg-right col-lg-2 mt-5 mr-lg-2 ml-lg-0 pl-lg-0">
                                 <a href="{{path('account_profil',{'slug':a.slug})}}" class="stretched-link text-decoration-none">
                                     <img src="{{a.picture}}" 
                                     class="rounded-circle img-thumbail thumbail d-block" 
                                     title="Auteur: {{a.fullName}}" 
                                     alt="image de {{a.fullname}}">
                                     </div>
-                                    <div class="col-xs-12 col-sm-10 col-md-10 col-lg-8 ml-md-1 pl-4 pr-4 pb-4 mt-sm-2 mt-md-2 mt-lg-5 mx-sm-auto ml-lg-3">
+                                    <div class="col-12 text-center text-lg-left col-lg-8  pl-4 pr-4 pb-4 mt-sm-2 mt-md-2 mt-lg-5">
                                     <h5>{{a.fullname}}</h5>
-                                    <p class="badge badge-primary">{{a.ads|length}} annonces</p>
+                                    <p class="badge badge-primary p-2">{{a.ads|length}} annonces</p>
                                 </a>
                             </div>
-                            <div class="col-lg-11 mx-xs-auto mx-sm-auto pl-lg-0 mt-lg-2 text-muted h6">
+                            <div class="col-11 mx-auto pl-lg-0 mt-lg-2 text-muted h6">
                             {{a.introduction}}
                             </div>
-                            <div class="row col-11 mx-xs-0 mx-sm-0 mx-md-auto">
+                            <div class="row col-11 mx-auto mx-md-auto p-4 p-lg-3 ">
                                 {{a.description|raw}}
                             </div>
                         </div>
@@ -111,41 +116,60 @@
     <hr>
     <h3 class="mb-5">
         {% if ad.comments|length >0 %}
-            Avis Clients 
+            <div class="my-4">Avis Clients</div>  
+            <div class="alert alert-primary d-flex justify-content-around align-items-center flex-wrap">
+                <div><h5>Note moyenne obtenue pour ce bien</h5></div>
+                    <div>
+                        <div class="h6 text-center">
+                        {{ad.comments|length}} 
+                            {% if ad.comments|length < 2 %}
+                                avis posté par ce voyageur 
+                            {% else %}
+                                avis postés par nos voyageurs
+                            {% endif %}
+                        </div>
+                        <div class="text-center">
+                            {% include "partials/rating_stars.html.twig" with {'rating':ad.getAvgRatings()| round(0,'floor') }%}
+                        </div>
+                    </div>
+                </div>
+            
         {% else %}
-            Pas encore d'avis clients sur ce bien... Soyez le premier en réservant dès maintenant !!!
+        <div class="d-flex justify-content-center">Pas encore d'avis clients sur ce bien... Soyez le premier en réservant dès maintenant !!!</div> 
         {% endif %}  
     </h3>
     {% if ad.comments|length >0 %}
-        <div class="row col-12 d-flex align-items-start border border-dark rounded p-4 mb-4">
-            {% for comment in ad.comments %}
-                <div class="col-12 col-md-12 mx-auto mx-lg-0 col-lg-7">
-                    <div class="ml-1">
-                        Auteur de l'avis : 
-                            <strong>
-                                {{ comment.author.fullName }}
-                            </strong>
+        {% for comment in ad.comments %}
+            <div class="row col-12 d-flex align-items-start border border-dark rounded p-4 mb-4 mx-auto">
+                    <div class="col-12 col-md-12 mx-auto mx-lg-0 col-lg-7">
+                        <div class="ml-1">
+                            Auteur de l'avis : 
+                                <strong>
+                                    {{ comment.author.fullName }}
+                                </strong>
+                        </div>
+                        <div class="ml-3">
+                            Créé le : 
+                                <strong>
+                                    {{ comment.creatAt |  format_datetime('full', 'none', locale='fr')}}
+                                </strong>
+                        </div>
+                        <div class="ml-5">A écrit : 
+                            <blockquote>
+                                <p><strong>
+                                    "{{comment.content}}"
+                                </strong></p>
+                            </blockquote>
+                        </div>
+                        
                     </div>
-                    <div class="ml-3">
-                        Créé le : 
-                            <strong>
-                                {{ comment.creatAt |  format_datetime('full', 'none', locale='fr')}}
-                            </strong>
+                    <div class="col-12 col-lg-5 d-flex flex-wrap col-8 mx-auto justify-content-center ">
+                        <p class="badge h3 p-3 d-flex flex-wrap" style="background-color:#cce5ff">{{ comment.author.fullName }}&nbsp; à noté ce bien : 
+                        &nbsp;{% include "partials/rating_stars.html.twig" with {'rating': comment.rating} %}
+                        </p>
                     </div>
-                    <div class="ml-5">A écrit : 
-                        <blockquote>
-                            <p><strong>
-                                "{{comment.content}}"
-                            </strong></p>
-                        </blockquote>
-                    </div>
-                    
-                </div>
-                <div class="col-12 col-md-12 col-lg-5 mx-auto text-center text-md-center">
-                    <p class="badge badge-primary h3 p-3"><strong>{{comment.author.fullName}}</strong> à noté ce bien : <strong>{{comment.rating}}</strong> / 5</p>
-                </div>
-            {% endfor %}
-        </div>
+            </div>
+        {% endfor %}
     {% endif %}
 </div>
 {% endblock %}

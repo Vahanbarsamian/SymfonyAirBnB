@@ -87,13 +87,13 @@ footer {
 .endPage {
     margin-bottom: 7rem;
 }
-.datepicker-days > table > tbody > tr > td.disabled-date,
-.datepicker-days > table > tbody > tr:hover > td.disabled-date
-{
+
+.datepicker-days>table>tbody>tr>td.disabled-date,
+.datepicker-days>table>tbody>tr:hover>td.disabled-date {
     color: red;
 }
 
-fieldset{
+fieldset {
     background-color: #dce4e3;
     border-radius: 8px;
     padding: 18px;
@@ -102,6 +102,11 @@ fieldset{
     -ms-border-radius: 8px;
     -o-border-radius: 8px;
 }
+
 .list-group-item {
     background-color: transparent;
+}
+
+.rating_color {
+    color:goldenrod;
 }

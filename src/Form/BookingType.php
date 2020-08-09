@@ -53,7 +53,7 @@ class BookingType extends ConfigurationType
                 TextareaType::class,
                 $this->getConfiguration(
                     "Un commentaire ?",
-                    "Merci de déposer ici votre commentaire...Si vous le désirez",
+                    \utf8_decode("Merci de déposer ici votre commentaire...Si vous le désirez"),
                     false
                 )
             )

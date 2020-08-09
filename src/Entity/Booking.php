@@ -182,7 +182,7 @@ class Booking
 
     public function getAmount(): ?float
     {
-        return $this->amount;
+        return $this->amount = $this->getDuration() * $this->ad->getPrice();
     }
 
     public function setAmount(float $amount): self

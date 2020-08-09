@@ -116,17 +116,17 @@ class AdFixtures extends Fixture
                     ->setAmount($amount)
                     ->setComment($comment);
                 $manager->persist($reservation);
+                // Nombre de commentaires associés aléatoires
+                if (mt_rand(0, 1)) {
+                    $comment = new Comment();
+                    $comment->setContent($faker->paragraph())
+                        ->setRating(mt_rand(1, 5))
+                        ->setAuthor($booker)
+                        ->setAd($ad);
+                    $manager->persist($comment);
+                }
             }
             $manager->persist($ad);
-                        // Nombre de commentaires associés aléatoires
-            if (mt_rand(0, 1)) {
-                $comment = new Comment();
-                $comment->setContent($faker->paragraph())
-                    ->setRating(mt_rand(1, 5))
-                    ->setAuthor($booker)
-                    ->setAd($ad);
-                $manager->persist($comment);
-            }
         }
         $manager->flush();
     }

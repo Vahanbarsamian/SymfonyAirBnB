@@ -181,7 +181,7 @@ class AccountController extends AbstractController
         return $this->render(
             'account/show_bookings.html.twig',
             [
-                "titre"=>"Liste de vos réservations"
+                "titre"=>"Liste de mes réservations"
             ]
         );
     }

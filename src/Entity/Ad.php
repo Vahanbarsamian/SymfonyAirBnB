@@ -2,7 +2,9 @@
 
 namespace App\Entity;
 
+use App\Entity\User;
 use App\Entity\Image;
+use App\Entity\Comment;
 use Cocur\Slugify\Slugify;
 use App\Repository\AdRepository;
 use Doctrine\ORM\Mapping as ORM;
@@ -149,6 +151,40 @@ class Ad
             );
         }
         return $unbookingDates;
+    }
+
+    /**
+     * This method gives the av rating of a location
+     *
+     * @return float
+     */
+    public function getAvgRatings()
+    {
+        $sum = $this->comments->toArray();
+        $result=0;
+        foreach ($sum as $item) {
+            $result = $result+=$item->getrating();
+        }
+        if ($sum) {
+            return $result / count($sum);
+        }
+            return 0;
+    }
+
+    /**
+     * This method gives the author comments of ad if exists
+     *
+     * @param User $author
+     * @return Comment | null
+     */
+    public function getCommentFromAuthor(User $author)
+    {
+        foreach ($author->getComments() as $comment) {
+            if ($comment->getAuthor() === $author) {
+                return $comment;
+            }
+            return null;
+        }
     }
 
     public function getId(): ?int

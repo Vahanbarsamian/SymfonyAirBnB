@@ -17,7 +17,7 @@ class ConfigurationType extends AbstractType
         return [
             'label'=>\utf8_encode($label),
             'attr'=>[
-                'placeholder'=>$placeholder,
+                'placeholder'=>\utf8_encode($placeholder),
                 'class'=>$class
             ],
             'required'=>$required

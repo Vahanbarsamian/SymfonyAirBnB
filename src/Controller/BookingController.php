@@ -5,7 +5,9 @@ namespace App\Controller;
 use DateTimeZone;
 use App\Entity\Ad;
 use App\Entity\Booking;
+use App\Entity\Comment;
 use App\Form\BookingType;
+use App\Form\CommentType;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
@@ -70,12 +72,27 @@ class BookingController extends AbstractController
      * @return Response
      * @Route("/booking/get/{id}", name="ad_get_booking")
      */
-    public function getAction(Booking $booking)
+    public function getAction(Booking $booking, Request $request, EntityManagerInterface $manager)
     {
+        $comment = new Comment();
+        $commentForm = $this->createForm(CommentType::class, $comment);
+        $commentForm->handleRequest($request);
+        if ($commentForm->isSubmitted() && $commentForm->isValid()) {
+            $comment->setAd($booking->getAd());
+            $comment->setAuthor($this->getUser());
+            $manager->persist($comment);
+            $manager->flush();
+            $this->addFlash(
+                'success',
+                "<h5>Merci !... Votre avis a bien été pris en compte</h5>"
+            );
+        }
+
         return $this->render(
             "/booking/resume_booking.html.twig",
             [
-                'booking'=>$booking
+                'booking'=>$booking,
+                'comment_form'=> $commentForm->createView()
             ]
         );
     }

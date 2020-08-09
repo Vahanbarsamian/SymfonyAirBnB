@@ -7,7 +7,12 @@
             {{ ad.rooms }}
             {% if ad.rooms > 1 %} Chambres {% else %} Chambre {% endif %} &agrave;
             <strong>{{ad.price}} &euro; / nuit</strong>
-            <div class="my-2"><small>Pas encore not&eacute;</small></div>                
+            <div class="my-2">
+                <small> 
+                    {% if ad.getAvgRatings %}note moyenne: {% endif %}  
+                    {% include "partials/rating_stars.html.twig" with {'rating': ad.getAvgRatings}%}
+                </small>
+            </div>                
         </div>
             <div class="d-flex justify-content-center">
                 <a href="{{path('account_profil', {'slug':ad.author.slug})}}"><img src="{{ad.author.picture}}" class="rounded-circle img-thumbail thumbail" style="transform:translateY(30%)" alt="image de {{ad.author.fullName}}" title="{{ad.author.fullName}}"></a>
