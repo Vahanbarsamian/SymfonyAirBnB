@@ -14,29 +14,30 @@
     {# Ici commence la construction des blocs de réservation #}
     {% for booking in app.user.bookings %}
     {% set ad = booking.ad %}
-    <div class="d-flex align-items-center justify-content-center">
-        {% if loop.index % 2 != 0 %}
+        {% if loop.index%2 == 1 %}
+            <div class="d-flex align-items-center justify-content-center">
             <fieldset class='bg-secondary text-white row col-12 my-5 d-flex align-items-center'>
                 <legend class="text-center col-5 bg-dark rounded">
                     <h4 class="col-12"> {{ "Réservation : " | convert_encoding('UTF-8', 'ISO-8859-1')~ loop.index}}</h4>
                 </legend>
                 {# Partie de l'auteur #}
                 <div class="mb-4 col-6"> 
-
                     {# Partie image #}
                     <p><strong>Auteur :</strong><a href="{{ path('account_profil',{'slug': ad.author.slug }) }}" class="text-white text-decoration-none"> 
                     <img src="{{ad.author.picture }}" alt="avatar de l'auteur" class="thumbail rounded-circle">&nbsp;{{ ad.author.fullname }}</a> </p>
-                    <div class="d-flex justify-content-center d-flex flex-wrap">
-                        {% set rating = ad.getAvgRatings() %}
-                        {% set maNote = ad.commentFromAuthor(booking.booker) %}
-                        {% if rating is not null %} 
-                            <P class="col-12">Note Moyenne: {% include 'partials/rating_stars.html.twig' with {'rating':rating} %}</P>
-                        {% for comment in ad.comments %}
-                            {% if booking.booker.fullName is same as (comment.author.fullName) %}
-                                <p class="col-12">Ma note: {% include 'partials/rating_stars.html.twig' with {'rating':maNote.rating} %}</P>
-                                <blockquote><i>"{{maNote.content}}"</i></blockquote>
-                            {% endif %} 
-                        {% endfor %}
+                    <div class="d-flex justify-content-center flex-wrap">
+                        {% if ad.getAvgRatings() is not null %} 
+                            <P class="col-12 m-0">Note Moyenne: {% include 'partials/rating_stars.html.twig' with {'rating':ad.getAvgRatings()} %}</P>
+                                {% if not ad.commentFromAuthor(app.user) %}
+                                    <div class="col -12 d-flex justify-content-start my-3">
+                                        <a href="{{ path('ad_get_booking', {'id':booking.id}) }}" class="badge badge-primary p-1 rounded">Je donne mon avis !</a>
+                                    </div>
+                                {% else %}
+                                        <div class="col-12 border-top border-bottom border-grey my-3">
+                                            <p class="mt-2">{{ ' Ma note pour mon séjour ' | convert_encoding('UTF-8', 'ISO-8859-1') }}: {% include 'partials/rating_stars.html.twig' with {'rating':ad.ratingFromAuthor(app.user)} %}</P>
+                                            <blockquote class="d-flex d-inline"><i>"{{ ad.commentFromAuthor(app.user) }}"&nbsp;<a href="{{ path('account_change_comment',{'id':ad.idCommentFromAuthor(app.user),'booking_id':booking.id })}}" class="badge badge-success p-1 rounded">Modifier mon commentaire</a></i></blockquote>
+                                        </div>
+                                {% endif %} 
                         {% else %}
                             <p>Pas encore noté</p>
                         {% endif %}
@@ -54,7 +55,7 @@
                         <li class="list-group-item">{{ ' Montant du séjour : ' | convert_encoding('UTF-8', 'ISO-8859-1') }}<strong>{{booking.amount}}&euro;</strong></li>
                         <li class="list-group-item">{{ ' Commentaire : ' | convert_encoding('UTF-8', 'ISO-8859-1') }}
                         {% if booking.comment | length > 0 %}
-                            {{ booking.comment }}
+                            <strong>{{ booking.comment }}</strong>
                         {% else %}
                             <strong>{{ ' Aucun commentaire déposé ' | convert_encoding('UTF-8', 'ISO-8859-1') }}</strong>
                         {% endif %}
@@ -64,7 +65,7 @@
             </fieldset>
         {% else %}
         {# Reverse the display direction in case many booking #}
-            <fieldset class='row col-12 my-5 d-flex align-items-center'>
+            <fieldset class='row col-12 my-5 d-flex align-items-center mx-auto'>
                 <legend class="col-5 bg-dark text-white rounded" style="position: relative; top: -3px;left: 643px; width: 40%;">
                     <h4 class="col-12 text-center"> {{ "Réservation : " | convert_encoding('UTF-8', 'ISO-8859-1')~ loop.index}}</h4>
                 </legend>
@@ -78,7 +79,7 @@
                         <li class="list-group-item">{{ ' Montant du séjour : ' | convert_encoding('UTF-8', 'ISO-8859-1') }}<strong>{{booking.amount}}&euro;</strong></li>
                         <li class="list-group-item">{{ ' Commentaire : ' | convert_encoding('UTF-8', 'ISO-8859-1') }}
                         {% if booking.comment | length > 0 %}
-                            {{ booking.comment }}
+                            <strong>{{ booking.comment }}</strong>
                         {% else %}
                             <strong>{{ ' Aucun commentaire déposé ' | convert_encoding('UTF-8', 'ISO-8859-1') }}</strong>
                             {% endif %}
@@ -88,16 +89,19 @@
                 <div class="mb-4 col-6 text-right"> 
                     <p><strong>Auteur :</strong><a href="{{ path('account_profil',{'slug': ad.author.slug }) }}" class="text-dark text-decoration-none"> 
                     <img src="{{ad.author.picture }}" alt="avatar de l'auteur" class="thumbail rounded-circle">&nbsp;{{ ad.author.fullname }}</a></p>
-                <div class="d-flex justify-content-center">
-                    {% set rating = ad.getAvgRatings() %}
-                    {% if rating is not null %} 
-                        <P>Note Moyenne: {% include 'partials/rating_stars.html.twig' with {'rating':rating} %}</P>
-                        {% for comment in ad.comments %}
-                            {% if booking.booker.fullName is same as (comment.author.fullName) %}
-                                <p>Ma note: {% include 'partials/rating_stars.html.twig' with {'rating':maNote.rating} %}</P>
+                <div class="d-flex justify-content-center flex-wrap">
+                    {% if ad.getAvgRatings() is not null %} 
+                        <P class="col-12 m-0">Note Moyenne: {% include 'partials/rating_stars.html.twig' with {'rating':ad.getAvgRatings()} %}</P>
+                            {% if not ad.commentFromAuthor(app.user) %}
+                                <div class="col -12 d-flex justify-content-end my-3">
+                                    <a href="{{ path('ad_get_booking', {'id':booking.id}) }}" class="badge badge-primary p-1 rounded">Je donne mon avis !</a>
+                                </div>
+                            {% else %}
+                                <div class="col-12 border-top border-bottom border-dark my-3">
+                                    <p class="mt-2">{{ ' Ma note pour mon séjour ' | convert_encoding('UTF-8', 'ISO-8859-1') }}: {% include 'partials/rating_stars.html.twig' with {'rating': ad.ratingFromAuthor(app.user)} %}</P>
+                                    <blockquote class="d-flex d-inline"><i>"{{ ad.commentFromAuthor(app.user) }}"&nbsp;<a href="{{ path('account_change_comment',{'id':ad.idCommentFromAuthor(app.user),'booking_id':booking.id })}}" class="badge badge-success p-1 rounded">Modifier mon commentaire</a></i></blockquote>
+                                </div>
                             {% endif %} 
-                        {% endfor %}
-
                     {% else %}
                         <p>Pas encore noté</p>
                     {% endif %}

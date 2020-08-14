@@ -1,0 +1,16 @@
+{% extends "base.html.twig" %}
+{% block title %} {{ title }}{% endblock %}
+
+{% block body %}
+<h1 class="text-center mb-5 pb-5 border-bottom border-grey mx-auto text-center">{{title}}<br>
+    concernant ma reservation N° {{ app.request.query.get("booking_id" )}} chez {{ comment.ad.author.fullName }} 
+</h1>
+    <div class="mb-5">
+        {{ form_start(form,{"attr":{'class':'form form-group'}}) }}
+        {{ form_widget(form) }}
+            <div class="col-12 d-flex justify-content-end mb-5">
+                <button type="submit" class="btn btn-primary">Modifier !</button> 
+            </div>
+        {{ form_end(form) }}
+    </div>
+{% endblock %}

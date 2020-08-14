@@ -21,7 +21,7 @@
 {% endif %}
 {# Ici commence le titre de la reservation #}
 {% set author = booking.ad.author %}
-<h1 class="text-center mb-5 pb-5 border-bottom border-grey mx-auto"> Résumé de la location <b>{{ booking.getAd().getTitle() }}</b></h1>
+<h1 class="text-center mb-5 pb-5 border-bottom border-grey mx-auto"> Résumé de la location <b><i>{{ booking.getAd().getTitle() }}</i></b></h1>
 {# Ici commence le détail de l'hôte #}
 <div class="row mx-auto col-12 col-sm-12 col-lg-8 d-flex justify-content-center align-items-baseline">
     <div class="col-sm-12 col-12 col-md-5 col-lg-5 d-flex justify-content-center">
@@ -84,13 +84,13 @@
                 <p class="col-12">Confiez-nous votre opinion sur le déroulement de votre séjour.</p>
                 <div class="col-12 d-flex justify-content-center">
                 {% if date() > date(booking.endDate) %}
-                {% set comment = booking.ad.getCommentFromAuthor(app.user) %}
-                {% if comment is not null %} 
+                {% set ad = booking.ad %}
+                {% if ad.commentFromAuthor(app.user) %} 
                     <div class="col-12 d-flex justify-content-left d-flex flex-wrap">
                         <h5 class="mt-4 mb-3">Commentaire déposé</h5>
-                        <blockquote><i> "{{ comment.content }}" </i></blockquote>
+                        <blockquote class="col-12"><i> "{{ ad.commentFromAuthor(app.user) }}" </i></blockquote>
                         <div class="col-12 d-flex justify-content-end">
-                            <p>Note: {% include "partials/rating_stars.html.twig" with {'rating':comment.rating}%}</p>
+                            <p>Note: {% include "partials/rating_stars.html.twig" with {'rating':ad.ratingFromAuthor(app.user)}%}</p>
                         </div>
                     </div>
                 {% else %}

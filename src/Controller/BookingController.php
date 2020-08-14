@@ -22,7 +22,12 @@ class BookingController extends AbstractController
     /**
      * This method allow to add a reservation
      *
+     * @param Ad $ad
+     * @param Request $request
+     * @param EntityManagerInterface $manager
+     *
      * @Route("/booking/ad/{slug}", name="ads_add_booking")
+     *
      * @IsGranted("ROLE_USER")
      */
     public function addAction(Ad $ad, Request $request, EntityManagerInterface $manager)
@@ -58,7 +63,7 @@ class BookingController extends AbstractController
         return $this->render(
             'booking/form_booking.html.twig',
             [
-                'titre' => "Reservation du bien nommé: &nbsp; ".$ad->getTitle(),
+                'titre' => "Reservation du bien nommé: &nbsp; <i>".$ad->getTitle()."</i>",
                 'ad'=>$ad,
                 'booking'=>$booking,
                 'form'=> $form->createView()
@@ -68,8 +73,13 @@ class BookingController extends AbstractController
 
     /**
      * This method show details of booking passed
+     *
      * @param Booking $booking
+     * @param Request $request
+     * @param EntityManagerInterface $manager
+     *
      * @return Response
+     *
      * @Route("/booking/get/{id}", name="ad_get_booking")
      */
     public function getAction(Booking $booking, Request $request, EntityManagerInterface $manager)
@@ -97,6 +107,13 @@ class BookingController extends AbstractController
         );
     }
 
+    /**
+     * This method is used to Format the given date
+     *
+     * @param [type] $myDate
+     *
+     * @return void
+     */
     private function formatDate($myDate)
     {
         $date = new \DateTime($myDate);

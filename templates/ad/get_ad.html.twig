@@ -23,7 +23,7 @@
                 <img src="{{ad .coverImage}}" class="img-fluid img-thumbail rounded" style="width:100%; display:block"
                     alt="image de l'appartement">
                 <div class="row">
-                    <div class="col-8 card-body p-5 mx-auto">
+                    <div class="col-8 card-body p-0 p-md-5 mx-auto">
                         <h3 class="card-title">{{ad.title}}</h3>
                         <div class="card-subtitle text-muted my-3 h4">{{ad.introduction}}</div>
                         <div class="card-text">
@@ -154,7 +154,7 @@
                                     {{ comment.creatAt |  format_datetime('full', 'none', locale='fr')}}
                                 </strong>
                         </div>
-                        <div class="ml-5">A écrit : 
+                        <div class="ml-0 ml-md-5">A écrit : 
                             <blockquote>
                                 <p><strong>
                                     "{{comment.content}}"

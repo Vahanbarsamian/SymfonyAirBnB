@@ -2,6 +2,7 @@
 
 namespace App\Entity;
 
+use App\Entity\Ad;
 use Cocur\Slugify\Slugify;
 use Doctrine\ORM\Mapping as ORM;
 use App\Repository\UserRepository;

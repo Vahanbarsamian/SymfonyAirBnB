@@ -116,6 +116,7 @@ class Booking
 
     /**
      * Verify if the date passed is avilable or not
+     * 
      * @return null|[]
      */
     public function unvalidateDays()

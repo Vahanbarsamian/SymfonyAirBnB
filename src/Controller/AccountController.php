@@ -4,7 +4,9 @@ namespace App\Controller;
 
 use App\Entity\User;
 use App\Form\UserType;
+use App\Entity\Comment;
 use App\Form\AccountType;
+use App\Form\CommentType;
 use App\Entity\ModifyPassword;
 use App\Form\ModifyPasswordType;
 use Symfony\Component\Form\FormError;
@@ -12,9 +14,9 @@ use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Component\Security\Http\Authentication\AuthenticationUtils;
 use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
 
@@ -110,6 +112,10 @@ class AccountController extends AbstractController
     /**
     *This method allws user to modify his passwordUpdateAction
     *
+    * @param Request $request
+    * @param EntitityManagerInterface $manager
+    * @param UserPasswordEncoderInterface $encode
+    *
     * @return Response
     *
     * @Route("/account/update/password", name="password_update")
@@ -181,7 +187,40 @@ class AccountController extends AbstractController
         return $this->render(
             'account/show_bookings.html.twig',
             [
-                "titre"=>"Liste de mes réservations"
+                "titre"=>"Liste de mes réservations",
+            ]
+        );
+    }
+
+    /**
+     * This method permit to Change given rating about ad
+     *
+     * @param Comment $comment
+     * @param Request $request
+     * @param EntityManagerInterface $manager
+     *
+     * @return Response
+     *
+     * @Route("/account/change/comment/{id}", name="account_change_comment")
+     */
+    public function editMyComment(Comment $comment, Request $request, EntityManagerInterface $manager)
+    {
+        $form = $this->createForm(CommentType::class, $comment);
+        $form->handleRequest($request);
+        if ($form->isSubmitted() && $form->isValid()) {
+            $comment->setAuthor($this->getUser());
+            $comment->setAd($comment->getAd());
+            $manager->persist($comment);
+            $manager->flush();
+            $this->addFlash('success', "<h5>Bravo !... <br>Vos modifications ont bien été prises en compte !</h5>");
+            return $this->redirectToRoute('account_bookings');
+        }
+        return $this->render(
+            'account/change_my_comment.html.twig',
+            [
+                'title'=>"Modification de mon commentaire",
+                'form'=>$form->createView(),
+                'comment'=>$comment
             ]
         );
     }

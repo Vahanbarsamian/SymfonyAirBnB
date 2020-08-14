@@ -58,7 +58,7 @@
     <p class="rounded">{{user.fullName }} {{" n'a pas encore déposé d'annonce"| convert_encoding('UTF-8', 'ISO-8859-1')}}</p> 
 </div>
 {% endif %} </h3>
-    <div class="row d-flex justify-content-between">
+    <div class="row d-flex flex-wrap">
         {% for ad in user.ads %}
             {% include "/ad/_list_ad.html.twig" %}
         {% endfor %}

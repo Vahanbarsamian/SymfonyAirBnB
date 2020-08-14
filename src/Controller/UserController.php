@@ -9,7 +9,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 class UserController extends AbstractController
 {
     /**
-    * Undocumented function
+    * This method redirect to user profil view
     *
     * @param User $user
     *

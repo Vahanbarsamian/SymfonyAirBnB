@@ -175,16 +175,54 @@ class Ad
      * This method gives the author comments of ad if exists
      *
      * @param User $author
+     * 
      * @return Comment | null
      */
     public function getCommentFromAuthor(User $author)
     {
-        foreach ($author->getComments() as $comment) {
-            if ($comment->getAuthor() === $author) {
-                return $comment;
+        $comments = $this->getComments();
+        foreach ($comments->toArray() as $comment) {
+            if ($comment->getAuthor()->getId()=== $author->getId()) {
+                return $comment->getContent();
             }
-            return null;
         }
+        return null;
+    }
+
+    /**
+     * This method gives the author rating of ad if exists
+     *
+     * @param User $author
+     * 
+     * @return int | null
+     */
+    public function getRatingFromAuthor(User $author)
+    {
+        $comments = $this->getComments();
+        foreach ($comments->toArray() as $comment) {
+            if ($comment->getAuthor()->getId()=== $author->getId()) {
+                return $comment->getRating();
+            }
+        }
+        return null;
+    }
+
+    /**
+     * This method gives the id comment of ad if exists
+     *
+     * @param User $author
+     * 
+     * @return int | null
+     */
+    public function getIdCommentFromAuthor(User $author)
+    {
+        $comments = $this->getComments();
+        foreach ($comments->toArray() as $comment) {
+            if ($comment->getAuthor()->getId()=== $author->getId()) {
+                return $comment->getid();
+            }
+        }
+        return null;
     }
 
     public function getId(): ?int

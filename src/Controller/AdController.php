@@ -39,6 +39,9 @@ class AdController extends AbstractController
     /**
      * This method create a new ad
      *
+     * @param Request $request
+     * @param EntityManager $manager
+     *
      * @return Response
      *
      * @Route("/ad/create", name="create_ad")
@@ -74,6 +77,8 @@ class AdController extends AbstractController
     /**
      * This method return the selected ad
      *
+     * @param Ad $ad
+     *
      * @return Response
      *
      * @Route("/ad/{slug}", name="get_ad")
@@ -92,11 +97,18 @@ class AdController extends AbstractController
     /**
     * This method edit the choosen ad form to be modifyed
     *
+    * @param Request $request
+    * @param Ad $ad
+    * @param EntityManagerInterface $manager
+    *
     * @return Ad
     *
     * @Route("/ad/edit/{slug}", name="edit_ad")
     *
-    * @Security("is_granted('ROLE_USER') and user === ad.getAuthor()", message="Vous ne pouvez pas modifier l'annonce d'un tiers")
+    * @Security(
+    *  "is_granted('ROLE_USER') and user === ad.getAuthor()",
+    *   message="Vous ne pouvez pas modifier l'annonce d'un tiers"
+    * )
     */
     public function editAction(Request $request, Ad $ad, EntityManagerInterface $manager)
     {
@@ -165,6 +177,7 @@ class AdController extends AbstractController
      *
      * @param Ad $ad
      * @param EntityManagerInterface $manager
+     * 
      * @return void
      */
     public function removeImages($ad, $manager)
