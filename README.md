@@ -12,6 +12,8 @@
  
  Actually the booking part is functionnal(back and front parts)
  
- Working to next step to realise comments and votes
+ Comments and ratings full functionnal
+ 
+ Working to next step to realise admin dashboard
  
  (password users including admin user: password )
