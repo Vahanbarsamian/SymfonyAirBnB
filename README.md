@@ -10,7 +10,7 @@
  - Ads
  - booking with datapicker front and back part
  
- Actually the booking part is functionnal(back and front parts)
+ Actually the booking part is functional(back and front parts)
  
  Comments and ratings fully functional
  
