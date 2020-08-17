@@ -110,3 +110,7 @@ fieldset {
 .rating_color {
     color:goldenrod;
 }
+.table tbody tr:hover td{
+    background-color: #343a40;
+    color: #f8f9fa;
+}

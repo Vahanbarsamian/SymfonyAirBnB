@@ -1,0 +1,87 @@
+<nav class="navbar navbar-expand-lg navbar-light">
+    <a class="navbar-brand" href="{{path('home')}}">SymBnB</a>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarColor02" aria-controls="navbarColor02" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+    </button>
+    
+    <div class="collapse navbar-collapse" id="navbarColor02">
+        <ul class="navbar-nav mr-auto">
+            <li class="nav-item active">
+            <a class="nav-link" href="#">
+                <i class="fas fa-chart-line"> 
+                    Dashboard
+                </i> 
+                    <span class="sr-only">
+                        (current)
+                    </span>
+            </a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="{{path('list_admin_ad')}}"> 
+                    <i class="fas fa-house-user" aria-hidden="true">
+                        Annonces
+                    </i>
+                </a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="#"> 
+                    <i class="fas fa-calendar-alt"> 
+                        Réservations
+                    </i> 
+                </a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="#"> 
+                    <i class="fas fa-comments" aria-hidden="true">
+                        Commentaires
+                    </i> 
+                </a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="#"> 
+                    <i class="fas fa-users" aria-hidden="true">
+                        Utilisateurs
+                    </i>
+                </a>
+            </li>
+        </ul>
+        <ul class="navbar-nav text-center col-sm-4 col-md-4 col-lg-2 p-0">
+            {% if not app.user %}
+                <li class="nav-item dropdown mx-auto">
+                    <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        Menu
+                    </a>
+                    <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
+                        <a class="dropdown-item" href="{{path('account_login')}}">Connexion</a>
+                        <a class="dropdown-item" href="{{path('account_register')}}">Inscription</a>
+                    </div>
+                </li>
+            {% endif %}
+            {% if app.user %}
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        <img src="{{app.user.picture}}" class="img-thumbnail img-fluid rounded-circle" style="max-width:20%;" alt="Avatar de {{app.user.fullName}}">
+                        {{app.user.fullName}}
+                    </a>
+                    <div class="dropdown-menu text-center" aria-labelledby="navbarDropdownMenuLink">
+                        <a class="dropdown-item" href="{{path('home')}}" target="_blank">
+                            <i class="fa fa-home" aria-hidden="true">
+                                Accueil
+                            </i>
+                        </a>
+                        <div class="dropdown-divider"></div>
+                        <a class="dropdown-item" href="{{path('account_logout')}}">
+                            <i class="fas fa-door-open"> 
+                                Deconnexion
+                            </i>
+                        </a>
+                    </div>
+                </li>
+            {% endif %}
+        </ul>
+        <form class="form-inline my-2 ml-lg-5">
+            <input class="form-control mr-sm-2" type="text" placeholder="Search">
+            <button class="btn btn-secondary my-2 my-sm-0" type="submit">Search</button>
+        </form>
+    </div>
+</nav>

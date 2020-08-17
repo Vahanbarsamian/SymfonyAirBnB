@@ -21,7 +21,7 @@ class UserType extends ConfigurationType
             ->add(
                 'firstName',
                 TextType::class,
-                $this->getConfiguration('Prénom', "Votre prénom ici", true, 'form-control')
+                $this->getConfiguration(\utf8_decode('Prénom'), \utf8_decode("Votre prénom ici"), true, 'form-control')
             )
             ->add(
                 'lastName',

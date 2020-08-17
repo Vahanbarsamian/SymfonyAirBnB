@@ -21,7 +21,7 @@ class AccountType extends ConfigurationType
             ->add(
                 'firstName',
                 TextType::class,
-                $this->getConfiguration('Prénom', "Votre prénom ici", true, 'form-control')
+                $this->getConfiguration('Prenom', "Votre prenom ici", true, 'form-control')
             )
             ->add(
                 'lastName',

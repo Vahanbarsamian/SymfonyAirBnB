@@ -42,7 +42,7 @@ class AdFixtures extends Fixture
         ->setIntroduction('Jeune développeur de 50 ans réalise un voeux')
                 ->setDescription("<p>Jeune développeur de 50 ans j'ai entammé une reconversion en PHP et Symfony notamment</p>")
                 ->setHash($this->encoder->encodePassword($adminUser, 'password'))
-                ->setPicture('https://avataaars.io/?avatarStyle=Circle&topType=ShortHairShortCurly&accessoriesType=Prescription01&hairColor=BrownDark&facialHairType=Blank&clotheType=BlazerShirt&eyeType=Default&eyebrowType=DefaultNatural&mouthType=Smile&skinColor=Pale')
+                ->setPicture('/img/avatars.png')
                 ->addRole($adminRole);
         $manager->persist($adminUser);
 
