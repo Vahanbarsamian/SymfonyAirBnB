@@ -12,7 +12,7 @@
  
  Actually the booking part is functionnal(back and front parts)
  
- Comments and ratings full functionnal
+ Comments and ratings fully functional
  
  Working to next step to realise admin dashboard
  
