@@ -11,7 +11,7 @@ class AdminAdController extends AbstractController
     /**
      * @Route("/admin/ads", name="list_admin_ad")
      */
-    public function index(AdRepository $repo)
+    public function ListAction(AdRepository $repo)
     {
         $ads = $repo->findAll();
         return $this->render('admin/ad/list_admin_ad.html.twig', [
