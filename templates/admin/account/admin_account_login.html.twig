@@ -23,7 +23,7 @@
                 
                     <h3><label for="loginName">Email</label></h3>
                     <div class="input-group-append mb-4">
-                        <input id="loginName" type="text" name="_username" class="form-control" placeholder="Votre email" required>
+                        <input id="loginName" type="text" name="_username" class="form-control" placeholder="Votre email" value="{{lastUser}}" required>
                             <div class="input-group-text">
                                 <i class="fa fa-envelope" aria-hidden="true"></i>
                             </div>
@@ -38,8 +38,10 @@
                         <div class="d-flex justify-content-end">
                             <input type="submit" value="Connexion" class="btn btn-primary">
                         </div>
-                    {% if errorMessage is defined %}
-                        <p>{{ errorMessage }}</p>
+                    {% if error is not null %}
+                        <p class="alert alert-danger my-3">{{ error }} <br> Contactez l'administrateur du site pour plus de précisions... Merci</p>
+                    {% else %}
+                        <p></p>
                     {% endif %}
             </form>
             <p class="mt-5"><a href="{{ path('home') }}" class="text-decoration-none"><i class="fa fa-home" aria-hidden="true"></i>  Retour à la page d'accueil</a></p>

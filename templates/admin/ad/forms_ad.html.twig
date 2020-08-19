@@ -1,0 +1,19 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}{{titre}}{% endblock %}
+{% form_theme form '/ad/_ad_theme_images.html.twig' %}
+{% block body %}
+<h1 class="text-center mb-5 pb-5 border-bottom border-grey mx-auto">{{titre| convert_encoding('UTF-8', 'ISO-8859-1')}}</h1>
+{{ form_start(form, {'attr':{'class':'form-group'}}) }}
+{{ form_widget(form) }}
+    <div class="d-flex justify-content-end">
+        <a href="{{path('list_admin_ad')}}" class="btn btn-warning form-group d-inline mr-3">{{ ' Retour à la page admin ' | convert_encoding('UTF-8', 'ISO-8859-1') }}</a>
+        <input type="submit" class="btn btn-primary form-group d-inline" 
+            value="{{ ' Modifier cette annonce ' | convert_encoding('UTF-8', 'ISO-8859-1') }}">
+    </div>
+{{ form_end(form) }}
+{% endblock %}
+
+{% block javascripts %}
+<script src="/js/add_remove_image_ad.js"></script>
+{% endblock %}
