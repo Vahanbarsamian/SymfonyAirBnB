@@ -175,7 +175,7 @@ class Ad
      * This method gives the author comments of ad if exists
      *
      * @param User $author
-     * 
+     *
      * @return Comment | null
      */
     public function getCommentFromAuthor(User $author)
@@ -193,7 +193,7 @@ class Ad
      * This method gives the author rating of ad if exists
      *
      * @param User $author
-     * 
+     *
      * @return int | null
      */
     public function getRatingFromAuthor(User $author)
@@ -211,7 +211,7 @@ class Ad
      * This method gives the id comment of ad if exists
      *
      * @param User $author
-     * 
+     *
      * @return int | null
      */
     public function getIdCommentFromAuthor(User $author)

@@ -137,7 +137,7 @@ class AdController extends AbstractController
             $ad->setAuthor($this->getUser());
             $manager->persist($ad);
             $manager->flush();
-            $this->addFlash('success', "Les modifications de l'annonce ont bien été prises en compte");
+            $this->addFlash('success', "Les modifications de l'annonce ont bien &eacute;t&eacute; prises en compte");
             return $this->redirectToRoute('get_ad', ["slug"=>$ad->getSlug()]);
         }
         return $this->render(
@@ -167,7 +167,7 @@ class AdController extends AbstractController
         $this->removeImages($ad, $manager);
         $manager->remove($ad);
         $manager->flush();
-        $this->addFlash('success', "l'annonce {ad->getTitle()} à bien été supprimée");
+        $this->addFlash('success', "l'annonce {ad->getTitle()} à bien &eacute;t&eacute; supprimée");
         return $this->redirectToRoute('list_ad');
     }
 
@@ -177,7 +177,7 @@ class AdController extends AbstractController
      *
      * @param Ad $ad
      * @param EntityManagerInterface $manager
-     * 
+     *
      * @return void
      */
     public function removeImages($ad, $manager)

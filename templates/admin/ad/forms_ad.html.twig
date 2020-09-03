@@ -1,19 +1,93 @@
-{% extends 'base.html.twig' %}
+{% extends 'admin/base.html.twig' %}
 
 {% block title %}{{titre}}{% endblock %}
 {% form_theme form '/ad/_ad_theme_images.html.twig' %}
 {% block body %}
-<h1 class="text-center mb-5 pb-5 border-bottom border-grey mx-auto">{{titre| convert_encoding('UTF-8', 'ISO-8859-1')}}</h1>
-{{ form_start(form, {'attr':{'class':'form-group'}}) }}
-{{ form_widget(form) }}
-    <div class="d-flex justify-content-end">
-        <a href="{{path('list_admin_ad')}}" class="btn btn-warning form-group d-inline mr-3">{{ ' Retour à la page admin ' | convert_encoding('UTF-8', 'ISO-8859-1') }}</a>
-        <input type="submit" class="btn btn-primary form-group d-inline" 
-            value="{{ ' Modifier cette annonce ' | convert_encoding('UTF-8', 'ISO-8859-1') }}">
+{% form_theme form _self %}
+<h1 class="text-center mb-5 pb-5 border-bottom border-grey mx-auto ">{{titre| raw}}</h1>
+<div class="row d-flex justify-content-around d-flex flex-wrap">
+    <div class="card col-12 col-lg-5 p-0">
+        <div class="card-header">
+            <h2 class="text-center">L'annonce</h2>
+        </div>
+        <div class="card-body">
+        {{ form_start(form, {'attr':{'class':'form-group mt-2 p-md-4 col-12 w-100 col-md-11'}}) }}
+        {{ form_widget(form) }}
+        <div class="d-flex justify-content-sm-end flex-wrap text-xs-center">
+            <a href="{{path('list_admin_ad')}}" class="btn btn-warning form-group d-inline mx-auto mx-sm-2">{{ ' Retour à la page admin ' | convert_encoding('UTF-8', 'ISO-8859-1') }}</a>
+            <button type="submit" class="btn btn-primary form-group d-inline mx-auto mx-sm-0" 
+                >&nbsp;<i class="fa fa-check" aria-hidden="true">{{ ' Modifier cette annonce ' | convert_encoding('UTF-8', 'ISO-8859-1') }}</i>
+        </div>
+        {{ form_end(form) }}
+        </div>
     </div>
-{{ form_end(form) }}
+    <div class="card col-12 col-lg-5 p-0 mb-auto">
+        <div class="card-header text-center">
+            <h2>{{ ' Les réservations ' | convert_encoding('UTF-8', 'ISO-8859-1') }}</h2>
+        </div>
+        <div class="card-body mb-5">
+            <table class="table table-striped">
+                <thead>
+                    <th>{{ ' Id réservation ' | convert_encoding('UTF-8', 'ISO-8859-1') }}</th>
+                    <th>Voyageur</th>
+                    <th>{{ ' Date de réservation ' | convert_encoding('UTF-8', 'ISO-8859-1') }}</th>
+                    <th>Editer</th>
+                    <tbody>
+                    {% for booking in ad.bookings %}
+                        <tr>
+                            <td>{{booking.id}}</td>
+                            <td>{{booking.booker.fullName}}</td>
+                            <td>du {{booking.startDate| format_datetime('full', 'none', locale='fr')}} au {{booking.endDate|format_datetime('full', 'none', locale='fr')}}</td>
+                            <td><a href="{{ path('ad_get_booking', {'id':booking.id }) }}"><i class="fa fa-pencil-alt btn btn-dark" aria-hidden="true"></i></a></td>
+                        </tr>
+                    {% endfor %}
+                    </tbody>
+                </thead>
+            </table>
+        </div>
+        <div class="card-header text-center mt-5 mt-lg-0 my-auto">
+            <h2>{{ ' Les commentaires ' | convert_encoding('UTF-8', 'ISO-8859-1') }}</h2>
+        </div>
+        <div class="card-body">
+            <table class="table table-striped">
+                <thead>
+                    <th>{{ ' Id commentaire ' | convert_encoding('UTF-8', 'ISO-8859-1') }}</th>
+                    <th>Voyageur</th>
+                    <th>Note</th>
+                    <th>Commentaire</th>
+                    <th>Editer</th>
+                    <tbody>
+                    {% for comment in ad.comments %}   
+                        <tr>
+                            <td>{{comment.id}}</td>
+                            <td>{{comment.author.fullName}}</td>
+                            <td>{{comment.rating}}</td>
+                            <td>{{comment.content}}</td>
+                            <td><a href="{{ path('account_change_comment', {'id':comment.id, 'booking_id': comment.author.bookings[loop.index0].id}) }}"><i class="fa fa-pencil-alt btn btn-dark" aria-hidden="true"></i></a></td>
+                        </tr>
+                    {% endfor %}  
+                    </tbody>
+                </thead>
+            </table>
+        </div>
+    </div>
+</div>
 {% endblock %}
 
 {% block javascripts %}
-<script src="/js/add_remove_image_ad.js"></script>
+    <script src="/js/add_remove_image_ad.js"></script>
+    <script src="/js/show_add_images.js"></script>
+
+{% endblock %}
+
+{% block _ad_images_widget %}
+    {{ form_widget(form) }}
+{% endblock %}
+
+{% block _ad_images_entry_widget %}
+    <div class="row d-flex flex-wrap align-items-end">
+        <div class="col-12 col-md-5">{{ form_row(form.caption, {'label': 'Titre de l\'image' }) }}</div>
+        <div class="col-12 col-md-5">{{ form_row(form.url, {'label': 'Adresse de l\'image' }) }}</div>
+        <div class="col d-flex justify-content-end"><button type="button" class="btn btn-danger mb-3 btn-delete"><i class="fa fa-trash" aria-hidden="true"></i></button></div>
+    </div>
 {% endblock %}
